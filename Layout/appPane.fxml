@@ -1,0 +1,710 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="657.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.MainController.Controller">
+	<children>
+		<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="657.0" tabClosingPolicy="UNAVAILABLE">
+			<tabs>
+				<Tab text="Console">
+					<content>
+						<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="547.0" prefWidth="669.0">
+							<children>
+								<VBox layoutX="459.0" layoutY="308.0" prefHeight="207.0" prefWidth="165.0" spacing="5.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dates" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation:">
+											<VBox.margin>
+												<Insets left="20.0" />
+											</VBox.margin>
+										</Text>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Due:">
+											<VBox.margin>
+												<Insets left="30.0" />
+											</VBox.margin>
+										</Text>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Action Item" />
+										<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="16.0" prefWidth="120.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status:" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Open" />
+											</children>
+											<padding>
+												<Insets left="20.0" />
+											</padding>
+										</HBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Member">
+											<font>
+												<Font name="System Bold" size="13.0" />
+											</font>
+										</Text>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="- no members assigned -" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Team">
+											<font>
+												<Font name="System Bold" size="13.0" />
+											</font>
+										</Text>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="- no teams assigned -" />
+									</children>
+								</VBox>
+								<VBox layoutX="455.0" layoutY="53.0" prefHeight="239.0" prefWidth="184.0" spacing="8.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sorting Direction" />
+										<ComboBox prefWidth="150.0">
+											<items>
+												<FXCollections fx:factory="observableArrayList">
+													<String fx:value="Large to Small" />
+													<String fx:value="Small to Large" />
+												</FXCollections>
+											</items>
+											<value>
+												<String fx:value="Large to Small" />
+											</value>
+										</ComboBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="First Sorting Direction" />
+										<ComboBox prefWidth="150.0">
+											<items>
+												<FXCollections fx:factory="observableArrayList">
+													<String fx:value="None" />
+													<String fx:value="Creation Date" />
+													<String fx:value="Due Date" />
+													<String fx:value="Assigned Member" />
+													<String fx:value="Assigned Team" />
+												</FXCollections>
+											</items>
+											<value>
+												<String fx:value="None" />
+											</value>
+										</ComboBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Second SortingFactor" />
+										<ComboBox prefWidth="150.0">
+											<items>
+												<FXCollections fx:factory="observableArrayList">
+													<String fx:value="None" />
+													<String fx:value="Creation Date" />
+													<String fx:value="Due Date" />
+													<String fx:value="Assigned Member" />
+													<String fx:value="Assigned Team" />
+												</FXCollections>
+											</items>
+											<value>
+												<String fx:value="None" />
+											</value>
+										</ComboBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Factor" />
+										<ComboBox prefWidth="150.0">
+											<items>
+												<FXCollections fx:factory="observableArrayList">
+													<String fx:value="All Action Items" />
+													<String fx:value="Open Action Items" />
+													<String fx:value="Closed Action Items" />
+												</FXCollections>
+											</items>
+											<value>
+												<String fx:value="AllAction Items" />
+											</value>
+										</ComboBox>
+									</children>
+								</VBox>
+								<VBox layoutX="19.0" layoutY="18.0" prefHeight="492.0" prefWidth="399.0" spacing="10.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="ActionItems: " />
+                              <ListView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="399.0" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Action Item" />
+										<HBox prefHeight="28.0" prefWidth="399.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</Text>
+												<TextField prefHeight="0.0" prefWidth="341.0" />
+											</children>
+										</HBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+										<TextArea prefHeight="65.0" prefWidth="399.0" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Resolution" />
+										<TextArea prefHeight="65.0" prefWidth="399.0" />
+									</children>
+								</VBox>
+								<Text layoutX="274.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console">
+									<font>
+										<Font name="System Font Regular" size="20.0" />
+									</font>
+								</Text>
+								<HBox layoutX="417.0" layoutY="10.0" prefHeight="33.0" prefWidth="200.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internet Access: " />
+										<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
+									</children>
+								</HBox>
+								<Text layoutX="446.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
+							</children>
+						</AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Action Items">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<HBox layoutX="3.0" layoutY="493.0" prefHeight="29.0" prefWidth="643.0" spacing="10.0">
+									<children>
+										<Button fx:id="updateActionItem" mnemonicParsing="false" prefHeight="26.0" prefWidth="159.0" text="Update this action item" />
+										<Button mnemonicParsing="false" onAction="#clearTheForm" text="Clear this Form" />
+										<Button fx:id="createActionItem" mnemonicParsing="false" onAction="#createActionItem" text="Create new action item" />
+										<Button fx:id="deleteActionItem" mnemonicParsing="false" onAction="#deleteThisActionItem" text="Delete this action item" />
+									</children>
+								</HBox>
+								<VBox layoutX="8.0" layoutY="52.0" prefHeight="162.0" prefWidth="614.0" spacing="10.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Action Item" />
+										<ComboBox fx:id="actionItemList" onAction="#loadActionItem" prefHeight="27.0" prefWidth="612.0" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select an Action Item from the pull-down list above to examine and update it.">
+											<font>
+												<Font name="Apple Braille Pinpoint 8 Dot" size="12.0" />
+											</font>
+										</Text>
+										<HBox prefHeight="24.0" prefWidth="614.0" spacing="45.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inclusion Factor:">
+													<HBox.margin>
+														<Insets left="10.0" />
+													</HBox.margin>
+												</Text>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sorting Direction" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="First Sorting Factor" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Second Sorting Factor" />
+											</children>
+										</HBox>
+										<HBox prefHeight="29.0" prefWidth="614.0" spacing="15.0">
+											<children>
+												<ComboBox fx:id="actionItemInclusionFactor" prefHeight="24.0" prefWidth="129.0">
+													<items>
+														<FXCollections fx:factory="observableArrayList">
+															<String fx:value="All Action Items" />
+															<String fx:value="Open Action Items" />
+															<String fx:value="Closed Action Items" />
+														</FXCollections>
+													</items>
+													<value>
+														<String fx:value="AllAction Items" />
+													</value>
+												</ComboBox>
+												<ComboBox fx:id="actionItemSortingDirection" prefHeight="24.0" prefWidth="129.0">
+													<HBox.margin>
+														<Insets left="10.0" />
+													</HBox.margin>
+													<items>
+														<FXCollections fx:factory="observableArrayList">
+															<String fx:value="Large to Small" />
+															<String fx:value="Small to Large" />
+														</FXCollections>
+													</items>
+													<value>
+														<String fx:value="Large to Small" />
+													</value>
+												</ComboBox>
+												<ComboBox fx:id="actionItemFirstSortingFactor" prefHeight="24.0" prefWidth="129.0">
+													<items>
+														<FXCollections fx:factory="observableArrayList">
+															<String fx:value="None" />
+															<String fx:value="Creation Date" />
+															<String fx:value="Due Date" />
+															<String fx:value="Assigned Member" />
+															<String fx:value="Assigned Team" />
+														</FXCollections>
+													</items>
+													<value>
+														<String fx:value="None" />
+													</value>
+												</ComboBox>
+												<ComboBox fx:id="actionItemSecondSortingFactor" prefHeight="24.0" prefWidth="129.0">
+													<HBox.margin>
+														<Insets left="15.0" />
+													</HBox.margin>
+													<items>
+														<FXCollections fx:factory="observableArrayList">
+															<String fx:value="None" />
+															<String fx:value="Creation Date" />
+															<String fx:value="Due Date" />
+															<String fx:value="Assigned Member" />
+															<String fx:value="Assigned Team" />
+														</FXCollections>
+													</items>
+													<value>
+														<String fx:value="None" />
+													</value>
+												</ComboBox>
+											</children>
+										</HBox>
+									</children>
+								</VBox>
+								<VBox layoutX="437.0" layoutY="232.0" prefHeight="228.0" prefWidth="165.0" spacing="5.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dates" />
+										<HBox prefHeight="100.0" prefWidth="200.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation:">
+													<HBox.margin>
+														<Insets />
+													</HBox.margin>
+												</Text>
+												<Text fx:id="actionItemCreationDate" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="80.0" />
+											</children>
+											<VBox.margin>
+												<Insets bottom="10.0" left="30.0" />
+											</VBox.margin>
+										</HBox>
+										<HBox prefHeight="29.0" prefWidth="165.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Due:">
+													<HBox.margin>
+														<Insets left="30.0" />
+													</HBox.margin>
+												</Text>
+												<DatePicker fx:id="actionItemDueDate" prefHeight="15.0" prefWidth="102.0">
+													<HBox.margin>
+														<Insets left="5.0" />
+													</HBox.margin>
+												</DatePicker>
+											</children>
+											<VBox.margin>
+												<Insets />
+											</VBox.margin>
+										</HBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Action Item" />
+										<HBox prefHeight="29.0" prefWidth="165.0" spacing="3.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status:">
+													<HBox.margin>
+														<Insets top="4.0" />
+													</HBox.margin>
+												</Text>
+												<ComboBox fx:id="actionItemStatus" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0">
+													<items>
+														<FXCollections fx:factory="observableArrayList">
+															<String fx:value="open" />
+															<String fx:value="closed" />
+														</FXCollections>
+													</items>
+													<value>
+														<String fx:value="open" />
+													</value>
+												</ComboBox>
+											</children>
+										</HBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Member">
+											<font>
+												<Font name="System Bold" size="13.0" />
+											</font>
+										</Text>
+										<ComboBox fx:id="actionItemMember" prefHeight="20.0" prefWidth="165.0">
+											<items>
+												<FXCollections fx:factory="observableArrayList">
+													<String fx:value="ram" />
+													<String fx:value="suraj" />
+													<String fx:value="roopa" />
+													<String fx:value="teju" />
+												</FXCollections>
+											</items>
+											<value>
+												<String fx:value="ram" />
+											</value>
+										</ComboBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Team">
+											<font>
+												<Font name="System Bold" size="13.0" />
+											</font>
+										</Text>
+										<ComboBox fx:id="actionItemTeam" prefHeight="20.0" prefWidth="165.0">
+											<items>
+												<FXCollections fx:factory="observableArrayList">
+													<String fx:value="alpha" />
+													<String fx:value="beta" />
+													<String fx:value="gamma" />
+													<String fx:value="delta" />
+												</FXCollections>
+											</items>
+											<value>
+												<String fx:value="alpha" />
+											</value>
+										</ComboBox>
+									</children>
+								</VBox>
+								<VBox layoutX="16.0" layoutY="213.0" prefHeight="270.0" prefWidth="399.0" spacing="10.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Action Item" />
+										<HBox prefHeight="28.0" prefWidth="399.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+													<font>
+														<Font size="15.0" />
+													</font>
+												</Text>
+												<TextField fx:id="actionItemName" prefHeight="26.0" prefWidth="360.0" />
+											</children>
+										</HBox>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+										<TextArea fx:id="actionItemDescription" prefHeight="65.0" prefWidth="399.0" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Resolution" />
+										<TextArea fx:id="actionItemResolution" prefHeight="65.0" prefWidth="399.0" />
+									</children>
+								</VBox>
+								<Text layoutX="245.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items">
+									<font>
+										<Font name="System Font Regular" size="20.0" />
+									</font>
+								</Text>
+								<HBox layoutX="420.0" layoutY="36.0" prefHeight="33.0" prefWidth="200.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internet Access: " />
+										<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
+									</children>
+								</HBox>
+								<Text layoutX="422.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
+							</children>
+						</AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Members">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<HBox layoutY="354.0" prefHeight="179.0" prefWidth="616.0">
+									<children>
+										<VBox prefHeight="179.0" prefWidth="210.0" spacing="10.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available teams for">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+												</Text>
+												<TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="191.0" />
+											</children>
+										</VBox>
+										<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="119.0" prefWidth="189.0" spacing="10.0">
+											<children>
+												<Button mnemonicParsing="false" text="Add Affiliation -&gt;">
+													<padding>
+														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+													</padding>
+													<VBox.margin>
+														<Insets left="30.0" />
+													</VBox.margin>
+												</Button>
+												<Button mnemonicParsing="false" text="&lt;- Remove Affiliation">
+													<padding>
+														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+													</padding>
+													<VBox.margin>
+														<Insets left="17.0" />
+													</VBox.margin>
+												</Button>
+											</children>
+											<HBox.margin>
+												<Insets top="40.0" />
+											</HBox.margin>
+										</VBox>
+										<VBox prefHeight="176.0" prefWidth="201.0" spacing="10.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current teams for">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+												</Text>
+												<TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="191.0" />
+											</children>
+											<padding>
+												<Insets left="15.0" />
+											</padding>
+										</VBox>
+									</children>
+								</HBox>
+								<VBox layoutX="343.0" layoutY="274.0" prefHeight="68.0" prefWidth="247.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To remove a team affiliation for an individual">
+											<font>
+												<Font name="System Bold" size="13.0" />
+											</font>
+											<VBox.margin>
+												<Insets bottom="2.0" />
+											</VBox.margin>
+										</Text>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Click on the name of the individual above." />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Click on team name in the list below" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Click on &quot;Remove affiliation&quot; button." />
+									</children>
+								</VBox>
+								<VBox layoutX="436.0" layoutY="72.0" prefHeight="168.0" prefWidth="191.0" spacing="10.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Individual known by della">
+											<font>
+												<Font name="System Bold" size="13.0" />
+											</font>
+										</Text>
+										<TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="132.0" prefWidth="191.0" />
+									</children>
+								</VBox>
+								<Text layoutX="242.0" layoutY="198.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to see team affiliations" />
+								<Text layoutX="238.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on individual's name" />
+								<VBox layoutX="230.0" layoutY="80.0" prefHeight="92.0" prefWidth="170.0" spacing="10.0">
+									<children>
+										<Button mnemonicParsing="false" text="Add to List -&gt;">
+											<padding>
+												<Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+											</padding>
+											<VBox.margin>
+												<Insets left="20.0" />
+											</VBox.margin>
+										</Button>
+										<Button mnemonicParsing="false" text="&lt;- Remove from List">
+											<padding>
+												<Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+											</padding>
+											<VBox.margin>
+												<Insets left="10.0" />
+											</VBox.margin>
+										</Button>
+									</children>
+								</VBox>
+								<VBox layoutY="80.0" prefHeight="236.0" prefWidth="247.0" spacing="10.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name of someone new" />
+										<TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="168.0" />
+										<VBox prefHeight="80.0" prefWidth="200.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To add a name to the list:">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+													<VBox.margin>
+														<Insets bottom="2.0" />
+													</VBox.margin>
+												</Text>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Click on the box above." />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Type the name" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Click the &quot;Add to List&quot; button." />
+											</children>
+										</VBox>
+										<VBox prefHeight="68.0" prefWidth="247.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To remove a name from the list:">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+													<VBox.margin>
+														<Insets bottom="2.0" />
+													</VBox.margin>
+												</Text>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Click on the name to remove" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Click on &quot;Remove from List&quot; button." />
+											</children>
+										</VBox>
+										<VBox prefHeight="68.0" prefWidth="247.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To add a team affiliation for an individual">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+													<VBox.margin>
+														<Insets bottom="2.0" />
+													</VBox.margin>
+												</Text>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Click on the name of the individual above right." />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Click on team name in the list below" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Click on &quot;Add affiliation&quot; button." />
+											</children>
+										</VBox>
+									</children>
+								</VBox>
+								<Text layoutX="249.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Members">
+									<font>
+										<Font name="System Font Regular" size="20.0" />
+									</font>
+								</Text>
+								<HBox layoutX="423.0" layoutY="25.0" prefHeight="33.0" prefWidth="200.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internet Access: " />
+										<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
+									</children>
+								</HBox>
+								<Text layoutX="208.0" layoutY="537.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
+							</children>
+						</AnchorPane>
+					</content>
+				</Tab>
+				<Tab text="Teams">
+					<content>
+						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+							<children>
+								<HBox layoutX="7.0" layoutY="341.0" prefHeight="179.0" prefWidth="616.0" spacing="20.0">
+									<children>
+										<VBox prefHeight="179.0" prefWidth="210.0" spacing="10.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Available members for team">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+												</Text>
+												<TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="191.0" />
+											</children>
+										</VBox>
+										<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="119.0" prefWidth="189.0" spacing="10.0">
+											<children>
+												<Button mnemonicParsing="false" text="Add association -&gt;">
+													<padding>
+														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+													</padding>
+													<VBox.margin>
+														<Insets left="30.0" />
+													</VBox.margin>
+												</Button>
+												<Button minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="178.0" text="&lt;- Remove association">
+													<padding>
+														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+													</padding>
+													<VBox.margin>
+														<Insets left="10.0" />
+													</VBox.margin>
+												</Button>
+											</children>
+											<HBox.margin>
+												<Insets top="40.0" />
+											</HBox.margin>
+										</VBox>
+										<VBox prefHeight="176.0" prefWidth="201.0" spacing="10.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Current members for team for">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+												</Text>
+												<TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="191.0" />
+											</children>
+										</VBox>
+									</children>
+								</HBox>
+								<VBox layoutX="372.0" layoutY="250.0" prefHeight="68.0" prefWidth="247.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To remove a team affiliation for a team:">
+											<font>
+												<Font name="System Bold" size="13.0" />
+											</font>
+											<VBox.margin>
+												<Insets bottom="2.0" />
+											</VBox.margin>
+										</Text>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Click on the name of the team above." />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Click on a member name in the list below" />
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Click on &quot;Remove association&quot; button." />
+									</children>
+								</VBox>
+								<VBox layoutX="435.0" layoutY="65.0" prefHeight="168.0" prefWidth="191.0" spacing="10.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Teams known by della">
+											<font>
+												<Font name="System Bold" size="13.0" />
+											</font>
+										</Text>
+										<TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="132.0" prefWidth="191.0" />
+									</children>
+								</VBox>
+								<Text layoutX="240.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to see member associations." />
+								<Text layoutX="252.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on an team's name" />
+								<VBox layoutX="244.0" layoutY="89.0" prefHeight="92.0" prefWidth="170.0" spacing="10.0">
+									<children>
+										<Button mnemonicParsing="false" text="Add to List -&gt;">
+											<padding>
+												<Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+											</padding>
+											<VBox.margin>
+												<Insets left="20.0" />
+											</VBox.margin>
+										</Button>
+										<Button mnemonicParsing="false" text="&lt;- Remove from List">
+											<padding>
+												<Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+											</padding>
+											<VBox.margin>
+												<Insets left="10.0" />
+											</VBox.margin>
+										</Button>
+									</children>
+								</VBox>
+								<VBox layoutX="5.0" layoutY="51.0" prefHeight="236.0" prefWidth="247.0" spacing="10.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name of a new team" wrappingWidth="132.912109375" />
+										<TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="168.0" />
+										<VBox prefHeight="80.0" prefWidth="200.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To add a name to the list:">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+													<VBox.margin>
+														<Insets bottom="2.0" />
+													</VBox.margin>
+												</Text>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Click on the box above." />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Type the name" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Click the &quot;Add to List&quot; button." />
+											</children>
+										</VBox>
+										<VBox prefHeight="68.0" prefWidth="247.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To remove a name from the list:">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+													<VBox.margin>
+														<Insets bottom="2.0" />
+													</VBox.margin>
+												</Text>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Click on the name to remove" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Click on &quot;Remove from List&quot; button." />
+											</children>
+										</VBox>
+										<VBox prefHeight="68.0" prefWidth="247.0">
+											<children>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To add a member association for a team">
+													<font>
+														<Font name="System Bold" size="13.0" />
+													</font>
+													<VBox.margin>
+														<Insets bottom="2.0" />
+													</VBox.margin>
+												</Text>
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="1. Click on the name of the individual above right." />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="2. Click on team name in the list below" />
+												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="3. Click on &quot;Add association&quot; button." />
+											</children>
+										</VBox>
+									</children>
+								</VBox>
+								<Text layoutX="284.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Teams">
+									<font>
+										<Font name="System Font Regular" size="20.0" />
+									</font>
+								</Text>
+								<HBox layoutX="414.0" layoutY="28.0" prefHeight="33.0" prefWidth="200.0">
+									<children>
+										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internet Access: " />
+										<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
+									</children>
+								</HBox>
+								<Text layoutX="223.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
+							</children>
+						</AnchorPane>
+					</content>
+				</Tab>
+			</tabs>
+		</TabPane>
+		<Button layoutX="426.0" layoutY="6.0" mnemonicParsing="false" onAction="#doQuit" text="Quit" />
+	</children>
+</Pane>
