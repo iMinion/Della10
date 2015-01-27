@@ -68,13 +68,16 @@ public class Controller {
 			String desc = actionItemDescription.getText();
 			String res = actionItemResolution.getText();
 			DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
-			Date due = new Date();
+			Date due = null;
+			System.out.println(actionItemDueDate.getValue());
 			try {
 				due = format.parse(actionItemDueDate.getValue().toString());
+				System.out.println(due);
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			String stat = actionItemStatus.getValue();
 			int status;
 			if(stat.charAt(0) == 'o' || stat.charAt(0) == 'O') status = 1;
@@ -107,14 +110,6 @@ public class Controller {
 				actionItemDescription.setText(rs.getString("description"));
 				actionItemResolution.setText(rs.getString("resolution"));
 				actionItemCreationDate.setText(rs.getString("creation"));
-//				DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
-//				Date due = new Date();
-//				try {
-//					due = format.parse(rs.getString("due"));
-//				} catch (ParseException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 				LocalDate dueD = LocalDate.parse(rs.getString("due"));
 				actionItemDueDate.setValue(dueD);
 				actionItemMember.setValue(rs.getString("member"));
@@ -191,7 +186,7 @@ public class Controller {
 			actionItem.setMember(actionItemMember.getValue());
 			if(actionItem.updateActionItem(selectedName)) {
 				actionItemList.getItems().remove(selectedName);
-				actionItemList.getItems().add(selectedName);
+				actionItemList.getItems().add(actionItemName.getText());
 			}
 			
 		} catch (InsufficientCredentialsException e) {
