@@ -127,6 +127,22 @@ public class Controller {
 		actionItemList.getItems().remove(name);
 	}
 	
+	public void clearTheForm() {
+		try {
+			actionItemList.getSelectionModel().clearSelection();
+			actionItemName.clear();
+			actionItemDescription.clear();
+			actionItemResolution.clear();
+			actionItemCreationDate.setText("");
+			actionItemDueDate.getEditor().setText("");
+			actionItemMember.getSelectionModel().clearSelection();
+			actionItemTeam.getSelectionModel().clearSelection();
+			actionItemStatus.getSelectionModel().clearSelection();
+		} catch(Exception ex) {
+			
+		}
+	}
+	
 	public void doQuit() {
 		System.exit(1);
 	}

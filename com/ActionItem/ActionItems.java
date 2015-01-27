@@ -2,7 +2,6 @@ package com.ActionItem;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import com.Database.Database;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
