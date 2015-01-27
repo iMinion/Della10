@@ -126,6 +126,19 @@ public class Controller {
 		String query = "delete from actionitems where name = '" + name + "'";
 		db.update(query);
 		actionItemList.getItems().remove(name);
+		try {
+			actionItemList.getSelectionModel().clearSelection();
+			actionItemName.clear();
+			actionItemDescription.clear();
+			actionItemResolution.clear();
+			actionItemCreationDate.setText("");
+			actionItemDueDate.getEditor().clear();
+			actionItemMember.getSelectionModel().clearSelection();
+			actionItemTeam.getSelectionModel().clearSelection();
+			actionItemStatus.getSelectionModel().clearSelection();
+		} catch(Exception ex) {
+			
+		}
 	}
 	
 	public void clearTheForm() {
