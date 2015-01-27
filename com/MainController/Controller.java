@@ -100,17 +100,18 @@ public class Controller {
 		String query = "select * from actionitems where name = '" + name + "'";
 		ResultSet rs = db.query(query);
 		try {
-			rs.next();
-			actionItemName.setText(rs.getString("name"));
-			actionItemDescription.setText(rs.getString("description"));
-			actionItemResolution.setText(rs.getString("resolution"));
-			actionItemCreationDate.setText(rs.getString("creation"));
-			actionItemDueDate.getEditor().setText(rs.getString("due"));
-			actionItemMember.setValue(rs.getString("member"));
-			actionItemTeam.setValue(rs.getString("team"));
-			int sta = Integer.parseInt(rs.getString("status"));
-			if(sta == 0) actionItemStatus.setValue("closed");
-			else actionItemStatus.setValue("open");
+			if(rs.next()) {
+				actionItemName.setText(rs.getString("name"));
+				actionItemDescription.setText(rs.getString("description"));
+				actionItemResolution.setText(rs.getString("resolution"));
+				actionItemCreationDate.setText(rs.getString("creation"));
+				actionItemDueDate.getEditor().setText(rs.getString("due"));
+				actionItemMember.setValue(rs.getString("member"));
+				actionItemTeam.setValue(rs.getString("team"));
+				int sta = Integer.parseInt(rs.getString("status"));
+				if(sta == 0) actionItemStatus.setValue("closed");
+				else actionItemStatus.setValue("open");
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -134,7 +135,7 @@ public class Controller {
 			actionItemDescription.clear();
 			actionItemResolution.clear();
 			actionItemCreationDate.setText("");
-			actionItemDueDate.getEditor().setText("");
+			actionItemDueDate.getEditor().clear();
 			actionItemMember.getSelectionModel().clearSelection();
 			actionItemTeam.getSelectionModel().clearSelection();
 			actionItemStatus.getSelectionModel().clearSelection();

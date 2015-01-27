@@ -55,6 +55,7 @@ public class ActionItems {
 	
 	public void setDueDate(java.util.Date date) throws InsufficientCredentialsException {
 		java.util.Date d = new java.util.Date();
+		System.out.println(date);
 		if(date.before(d)) {
 			throw new InsufficientCredentialsException();
 		}
