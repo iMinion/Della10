@@ -136,6 +136,33 @@ public class ActionItems {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public boolean updateActionItem(String name) {
+		String query = "update actionitems set name = '" + this.name + "', description = '" + description + "', resolution= '" + resolution
+						+ "', due = '" + this.dueDate + "', status = '" + this.status + "', member = '" + this.member + "', team ='" + this.team + "'"
+						+ "where name = '" + name + "'";
+		System.out.println(query);
+		int i = dbActions.update(query);
+		System.out.println(i);
+		if(i == 0) {
+			try {
+				dbActions.rollback();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return false;
+		}
+		else {
+			try {
+				dbActions.save();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		}
 		
 	}
 }

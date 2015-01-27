@@ -63,6 +63,7 @@ public class Database {
 	}
 	
 	public void rollback() throws SQLException {
+		if(sp != null)
 		con.rollback(sp);
 	}
 }

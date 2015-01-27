@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -41,7 +42,7 @@ public class Controller {
 	
 	private ActionItems actionItem = new ActionItems();
 	private Database db;
-	
+	private String selectedName;
 	public void initialize() {
 		db = new Database();
 		String query = "select name from actionitems";
@@ -59,6 +60,7 @@ public class Controller {
 		System.out.println(namesList);
 		actionItemList.setItems(namesList);
 		actionItemList.getSelectionModel().clearAndSelect(0);
+		selectedName = actionItemList.getValue();
 	}
 	
 	public void createActionItem() throws InsufficientCredentialsException {
@@ -105,7 +107,16 @@ public class Controller {
 				actionItemDescription.setText(rs.getString("description"));
 				actionItemResolution.setText(rs.getString("resolution"));
 				actionItemCreationDate.setText(rs.getString("creation"));
-				actionItemDueDate.getEditor().setText(rs.getString("due"));
+//				DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+//				Date due = new Date();
+//				try {
+//					due = format.parse(rs.getString("due"));
+//				} catch (ParseException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+				LocalDate dueD = LocalDate.parse(rs.getString("due"));
+				actionItemDueDate.setValue(dueD);
 				actionItemMember.setValue(rs.getString("member"));
 				actionItemTeam.setValue(rs.getString("team"));
 				int sta = Integer.parseInt(rs.getString("status"));
@@ -116,9 +127,7 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+		selectedName = name;
 	}
 	
 	public void deleteThisActionItem() {
@@ -154,6 +163,40 @@ public class Controller {
 			actionItemStatus.getSelectionModel().clearSelection();
 		} catch(Exception ex) {
 			
+		}
+	}
+	
+	public void updateActionItem() {
+		System.out.println("on click update");
+		
+		try {
+			actionItem.setName(actionItemName.getText());
+			actionItem.setDesc(actionItemDescription.getText());
+			actionItem.setResolution(actionItemResolution.getText());
+			DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
+			Date due = new Date();
+			try {
+				due = format.parse(actionItemDueDate.getValue().toString());
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			actionItem.setDueDate(due);
+			String stat = actionItemStatus.getValue();
+			int status;
+			if(stat.charAt(0) == 'o' || stat.charAt(0) == 'O') status = 1;
+			else status = 0;
+			actionItem.setStatus(status);
+			actionItem.setTeam(actionItemTeam.getValue());
+			actionItem.setMember(actionItemMember.getValue());
+			if(actionItem.updateActionItem(selectedName)) {
+				actionItemList.getItems().remove(selectedName);
+				actionItemList.getItems().add(selectedName);
+			}
+			
+		} catch (InsufficientCredentialsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
