@@ -195,7 +195,8 @@ public class Controller {
 	
 	public void displayMembers() {
 		String name = teamsKnown.getSelectionModel().getSelectedItem();
-		String query = "select membername from members where membername NOT IN (select membername from memberTeam where membername='" + name + "')";
+		String query = "select membername from members where membername NOT IN (select membername from memberTeam where teamname='" + name + "')";
+		System.out.println(query);
 		teamsMembersAvailable.getItems().clear();
 		ResultSet rs = db.query(query);
 		try {
@@ -219,7 +220,7 @@ public class Controller {
 	
 	public void displayTeams() {
 		String name = membersKnown.getSelectionModel().getSelectedItem();
-		String query = "select teamname from teams where teamname NOT IN (select teamname from memberTeam where membername='" + name + "')";
+		String query = "select teamname from teams where teamname NOT IN (select teamname from memberTeam where membername='"+name+"')";
 		membersTeamsAvailable.getItems().clear();
 		ResultSet rs = db.query(query);
 		try {
