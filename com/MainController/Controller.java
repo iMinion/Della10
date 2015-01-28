@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -67,17 +69,9 @@ public class Controller {
 			String name = actionItemName.getText();
 			String desc = actionItemDescription.getText();
 			String res = actionItemResolution.getText();
-			DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
-			Date due = null;
-			System.out.println(actionItemDueDate.getValue());
-			try {
-				due = format.parse(actionItemDueDate.getValue().toString());
-				System.out.println(due);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
+			LocalDate lDue = actionItemDueDate.getValue();
+			Instant instant = lDue.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+			Date due = Date.from(instant);
 			String stat = actionItemStatus.getValue();
 			int status;
 			if(stat.charAt(0) == 'o' || stat.charAt(0) == 'O') status = 1;

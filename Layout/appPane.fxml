@@ -16,43 +16,6 @@
 					<content>
 						<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="547.0" prefWidth="669.0">
 							<children>
-								<VBox layoutX="459.0" layoutY="308.0" prefHeight="207.0" prefWidth="165.0" spacing="5.0">
-									<children>
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dates" />
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation:">
-											<VBox.margin>
-												<Insets left="20.0" />
-											</VBox.margin>
-										</Text>
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Due:">
-											<VBox.margin>
-												<Insets left="30.0" />
-											</VBox.margin>
-										</Text>
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Action Item" />
-										<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="16.0" prefWidth="120.0">
-											<children>
-												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status:" />
-												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Open" />
-											</children>
-											<padding>
-												<Insets left="20.0" />
-											</padding>
-										</HBox>
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Member">
-											<font>
-												<Font name="System Bold" size="13.0" />
-											</font>
-										</Text>
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="- no members assigned -" />
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Team">
-											<font>
-												<Font name="System Bold" size="13.0" />
-											</font>
-										</Text>
-										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="- no teams assigned -" />
-									</children>
-								</VBox>
 								<VBox layoutX="455.0" layoutY="53.0" prefHeight="239.0" prefWidth="184.0" spacing="8.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Sorting Direction" />
@@ -115,7 +78,7 @@
 								<VBox layoutX="19.0" layoutY="18.0" prefHeight="492.0" prefWidth="399.0" spacing="10.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="ActionItems: " />
-                              <ListView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="399.0" />
+                              <ListView fx:id="consoleActionItems" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="399.0" />
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Action Item" />
 										<HBox prefHeight="28.0" prefWidth="399.0">
 											<children>
@@ -124,13 +87,13 @@
 														<Font size="15.0" />
 													</font>
 												</Text>
-												<TextField prefHeight="0.0" prefWidth="341.0" />
+												<TextField fx:id="consoleItemName" prefHeight="0.0" prefWidth="341.0" />
 											</children>
 										</HBox>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
-										<TextArea prefHeight="65.0" prefWidth="399.0" />
+										<TextArea fx:id="consoleItemDesc" prefHeight="65.0" prefWidth="399.0" />
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Resolution" />
-										<TextArea prefHeight="65.0" prefWidth="399.0" />
+										<TextArea fx:id="consoleItemResolution" prefHeight="65.0" prefWidth="399.0" />
 									</children>
 								</VBox>
 								<Text layoutX="274.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Console">
@@ -144,7 +107,61 @@
 										<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
 									</children>
 								</HBox>
-								<Text layoutX="446.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
+								<Text layoutX="444.0" layoutY="532.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
+                        <VBox layoutX="455.0" layoutY="292.0" prefHeight="228.0" prefWidth="165.0" spacing="5.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dates" />
+                              <HBox prefHeight="14.0" prefWidth="135.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Creation:">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Text>
+                                    <Text fx:id="consoleCreationDate" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="80.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="30.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <HBox prefHeight="29.0" prefWidth="165.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Due:">
+                                       <HBox.margin>
+                                          <Insets left="30.0" />
+                                       </HBox.margin>
+                                    </Text>
+                                    <Text fx:id="consoleDueDate" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </HBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Action Item" />
+                              <HBox prefHeight="22.0" prefWidth="165.0" spacing="3.0">
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Status:">
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Text>
+                                    <Text fx:id="consoleStatus" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                 </children>
+                              </HBox>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Member">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="consoleMember" strokeType="OUTSIDE" strokeWidth="0.0" text="- no member assigned -" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Team">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="consoleTeam" strokeType="OUTSIDE" strokeWidth="0.0" text=" - no Team Assigned -" />
+                           </children>
+                        </VBox>
 							</children>
 						</AnchorPane>
 					</content>
