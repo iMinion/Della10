@@ -184,12 +184,10 @@ public class Controller {
 	public void displayTeams() {
 		String name = membersKnown.getSelectionModel().getSelectedItem();
 		String query = "select teamname from teams where teamname NOT IN (select teamname from memberTeam where membername='" + name + "')";
-		System.out.println(query);
 		membersTeamsAvailable.getItems().clear();
 		ResultSet rs = db.query(query);
 		try {
 			while(rs.next()) {
-				System.out.println(rs.getString("teamname"));
 				membersTeamsAvailable.getItems().add(rs.getString("teamname"));
 			}
 		} catch (SQLException e) {
@@ -297,7 +295,6 @@ public class Controller {
 	}
 	
 	public void removeAffiliation() {
-		System.out.println("remove Affiliation");
 		String member = membersKnown.getSelectionModel().getSelectedItem();
 		String team = membersTeamsFor.getSelectionModel().getSelectedItem();
 		String query = "delete from memberTeam where membername='" + member + "' and teamname='" + team + "'";
