@@ -17,6 +17,8 @@ import javafx.scene.text.Text;
 import com.ActionItem.ActionItems;
 import com.ActionItem.InsufficientCredentialsException;
 import com.Database.Database;
+import com.Members.Members;
+import com.Team.Team;
 
 public class Controller {
 	@FXML
@@ -57,43 +59,57 @@ public class Controller {
 	private Text consoleTeam;
 	
 	@FXML
-	private Text membersNewName;
-	@FXML
-	private Button membersAdd;
-	@FXML
-	private Button membersRemove;
+	private TextField membersNewName;
 	@FXML
 	private ListView<String> membersKnown;
 	@FXML
 	private ListView<String> membersTeamsAvailable;
 	@FXML
-	private Button membersTeamAffiliation;
-	@FXML
-	private Button membersTeamDeaffiliation;
-	@FXML
 	private ListView<String> membersTeamsFor;
 	
 	@FXML
-	private Text teamNewName;
-	@FXML
-	private Button teamsAdd;
-	@FXML
-	private Button teamsRemove;
+	private TextField teamNewName;
 	@FXML
 	private ListView<String> teamsKnown;
 	@FXML
 	private ListView<String> teamsMembersAvailable;
 	@FXML
-	private Button teamsAssociation;
-	@FXML
-	private Button teamsRemoveAssociation;
-	@FXML
 	private ListView<String> teamsMembersFor;
 	
 	
 	private ActionItems actionItem = new ActionItems();
+	private Members members = new Members();
+	private Team teams = new Team();
 	private Database db;
 	private String selectedName;
+	
+	public void addMember() throws InsufficientCredentialsException {
+		String name = membersNewName.getText();
+		if(members.addMember(name) != 0) {
+			membersNewName.setText("");
+		}
+	}
+	
+	public void addTeam() throws InsufficientCredentialsException {
+		String name = teamNewName.getText();
+		if(teams.addTeam(name) != 0) {
+			teamNewName.setText("");
+		}
+	}
+	
+	public void removeMember() {
+		String name = membersKnown.getSelectionModel().getSelectedItem();
+		if(members.removeMember(name) != 0) {
+			membersNewName.setText(name);
+		}
+	}
+	
+	public void removeTeam() {
+		String name = teamsKnown.getSelectionModel().getSelectedItem();
+		if(teams.removeTeam(name) != 0) {
+			teamNewName.setText(name);
+		}
+	}
 	
 	public void clearTheForm() {
 		try {
