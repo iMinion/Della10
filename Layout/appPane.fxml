@@ -415,7 +415,7 @@
 														<Insets left="30.0" />
 													</VBox.margin>
 												</Button>
-												<Button mnemonicParsing="false" text="&lt;- Remove Affiliation">
+												<Button mnemonicParsing="false" onAction="#removeAffiliation" text="&lt;- Remove Affiliation">
 													<padding>
 														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 													</padding>

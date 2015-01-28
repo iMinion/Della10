@@ -85,7 +85,14 @@ public class Controller {
 	
 	public void addAffiliation() {
 		String member = membersKnown.getSelectionModel().getSelectedItem();
-		String team = membersTeamsAvailable.getSelectionModel().getSelectedItem(); 
+		String team = membersTeamsAvailable.getSelectionModel().getSelectedItem();
+		String query = "insert into memberTeam (membername,teamname) value ('" + member + "', '" + team + "')";
+		int i = db.update(query);
+		if(i != 0) {
+			membersTeamsAvailable.getItems().remove(team);
+			membersTeamsFor.getItems().add(team);
+		}
+		
 	}
 	
 	public void addMember() throws InsufficientCredentialsException {
@@ -264,7 +271,6 @@ public class Controller {
 		teamsKnown.setItems(teamList);
 	}
 	
-	
 	public void loadActionItem() {
 		String name = actionItemList.getValue();
 		String query = "select * from actionitems where name = '" + name + "'";
@@ -288,6 +294,18 @@ public class Controller {
 			e.printStackTrace();
 		}
 		selectedName = name;
+	}
+	
+	public void removeAffiliation() {
+		System.out.println("remove Affiliation");
+		String member = membersKnown.getSelectionModel().getSelectedItem();
+		String team = membersTeamsFor.getSelectionModel().getSelectedItem();
+		String query = "delete from memberTeam where membername='" + member + "' and teamname='" + team + "'";
+		int i = db.update(query);
+		if(i != 0) {
+			membersTeamsAvailable.getItems().add(team);
+			membersTeamsFor.getItems().remove(team);
+		}
 	}
 	
 	public void removeMember() {
