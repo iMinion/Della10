@@ -56,6 +56,40 @@ public class Controller {
 	@FXML
 	private Text consoleTeam;
 	
+	@FXML
+	private Text membersNewName;
+	@FXML
+	private Button membersAdd;
+	@FXML
+	private Button membersRemove;
+	@FXML
+	private ListView<String> membersKnown;
+	@FXML
+	private ListView<String> membersTeamsAvailable;
+	@FXML
+	private Button membersTeamAffiliation;
+	@FXML
+	private Button membersTeamDeaffiliation;
+	@FXML
+	private ListView<String> membersTeamsFor;
+	
+	@FXML
+	private Text teamNewName;
+	@FXML
+	private Button teamsAdd;
+	@FXML
+	private Button teamsRemove;
+	@FXML
+	private ListView<String> teamsKnown;
+	@FXML
+	private ListView<String> teamsMembersAvailable;
+	@FXML
+	private Button teamsAssociation;
+	@FXML
+	private Button teamsRemoveAssociation;
+	@FXML
+	private ListView<String> teamsMembersFor;
+	
 	
 	private ActionItems actionItem = new ActionItems();
 	private Database db;
