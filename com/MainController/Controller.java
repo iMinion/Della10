@@ -88,7 +88,7 @@ public class Controller {
 		if(members.addMember(name) != 0) {
 			membersNewName.setText("");
 			membersKnown.getItems().add(name);
-//			actionItemMember.getItems().add(name);
+			actionItemMember.getItems().add(name);
 		}
 	}
 	
@@ -97,7 +97,7 @@ public class Controller {
 		if(teams.addTeam(name) != 0) {
 			teamNewName.setText("");
 			teamsKnown.getItems().add(name);
-//			actionItemTeam.getItems().add(name);
+			actionItemTeam.getItems().add(name);
 		}
 	}
 	
@@ -106,7 +106,7 @@ public class Controller {
 		if(members.removeMember(name) != 0) {
 			membersNewName.setText(name);
 			membersKnown.getItems().remove(name);
-//			actionItemMember.getItems().remove(name);
+			actionItemMember.getItems().remove(name);
 		}
 	}
 	
