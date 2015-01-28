@@ -9,13 +9,6 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
 //import com.mysql.jdbc.Connection;
 
 public class ActionItems {
-	
-	final String url = "jdbc:mysql://localhost/Della";
-	final String driver = "com.mysql.jdbc.Driver";
-	final String uName = "root";
-	final String pWord = "root";
-	java.sql.Connection con;
-	
 	private Database dbActions;
 	
 	private String name;
