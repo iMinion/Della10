@@ -190,6 +190,12 @@ public class Controller {
 	
 	public void initialize() {
 		db = new Database();
+		initializeActionItems();
+		initializeMembers();
+		initializeTeams();
+	}
+	
+	public void initializeActionItems() {
 		String query = "select name from actionitems";
 		ResultSet rs = db.query(query);
 		ArrayList<String> list = new ArrayList<String>();
@@ -207,9 +213,12 @@ public class Controller {
 		consoleActionItems.setItems(namesList);
 		System.out.println(namesList);
 		selectedName = actionItemList.getValue();
-		query = "select * from members";
+	}
+	
+	public void initializeMembers() {
+		String query = "select * from members";
 		ArrayList<String> listM = new ArrayList<String>();
-		rs = db.query(query);
+		ResultSet rs = db.query(query);
 		try {
 			while(rs.next()) {
 				listM.add(rs.getString("membername"));
@@ -220,10 +229,13 @@ public class Controller {
 		}
 		ObservableList<String> memList = FXCollections.observableArrayList(listM);
 		membersKnown.setItems(memList);
-		query = "select * from teams";
+	}
+	
+	public void initializeTeams() {
+		String query = "select * from teams";
 		ArrayList<String> listT = new ArrayList<String>();
 		ObservableList<String> teamList = FXCollections.observableArrayList(listT);
-		rs = db.query(query);
+		ResultSet rs = db.query(query);
 		try {
 			while(rs.next()) {
 				listT.add(rs.getString("teamname"));
@@ -234,7 +246,6 @@ public class Controller {
 		}
 		teamsKnown.setItems(teamList);
 	}
-	
 	
 	
 	public void loadActionItem() {
