@@ -2,25 +2,21 @@ package com.MainController;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
-
-import com.ActionItem.ActionItems;
-import com.ActionItem.InsufficientCredentialsException;
-import com.Database.Database;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
+
+import com.ActionItem.ActionItems;
+import com.ActionItem.InsufficientCredentialsException;
+import com.Database.Database;
 
 public class Controller {
 	@FXML
@@ -209,14 +205,9 @@ public class Controller {
 			actionItem.setName(actionItemName.getText());
 			actionItem.setDesc(actionItemDescription.getText());
 			actionItem.setResolution(actionItemResolution.getText());
-			DateFormat format = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH);
-			Date due = new Date();
-			try {
-				due = format.parse(actionItemDueDate.getValue().toString());
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			LocalDate lDue = actionItemDueDate.getValue();
+			Instant instant = lDue.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+			Date due = Date.from(instant);
 			actionItem.setDueDate(due);
 			String stat = actionItemStatus.getValue();
 			int status;
