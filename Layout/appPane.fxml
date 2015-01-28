@@ -407,7 +407,7 @@
 										</VBox>
 										<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="119.0" prefWidth="189.0" spacing="10.0">
 											<children>
-												<Button mnemonicParsing="false" text="Add Affiliation -&gt;">
+												<Button mnemonicParsing="false" onAction="#addAffiliation" text="Add Affiliation -&gt;">
 													<padding>
 														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 													</padding>
@@ -465,7 +465,7 @@
 												<Font name="System Bold" size="13.0" />
 											</font>
 										</Text>
-                              <ListView fx:id="membersKnown" prefHeight="200.0" prefWidth="200.0" />
+                              <ListView fx:id="membersKnown" onMouseClicked="#displayTeams" prefHeight="200.0" prefWidth="200.0" />
 									</children>
 								</VBox>
 								<Text layoutX="256.0" layoutY="215.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to see team affiliations" />

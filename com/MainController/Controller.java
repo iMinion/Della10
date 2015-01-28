@@ -83,6 +83,11 @@ public class Controller {
 	private Database db;
 	private String selectedName;
 	
+	public void addAffiliation() {
+		String member = membersKnown.getSelectionModel().getSelectedItem();
+		String team = membersTeamsAvailable.getSelectionModel().getSelectedItem(); 
+	}
+	
 	public void addMember() throws InsufficientCredentialsException {
 		String name = membersNewName.getText();
 		if(members.addMember(name) != 0) {
@@ -101,23 +106,6 @@ public class Controller {
 		}
 	}
 	
-	public void removeMember() {
-		String name = membersKnown.getSelectionModel().getSelectedItem();
-		if(members.removeMember(name) != 0) {
-			membersNewName.setText(name);
-			membersKnown.getItems().remove(name);
-			actionItemMember.getItems().remove(name);
-		}
-	}
-	
-	public void removeTeam() {
-		String name = teamsKnown.getSelectionModel().getSelectedItem();
-		if(teams.removeTeam(name) != 0) {
-			teamNewName.setText(name);
-			teamsKnown.getItems().remove(name);
-			actionItemTeam.getItems().remove(name);
-		}
-	}
 	
 	public void clearTheForm() {
 		try {
@@ -167,20 +155,50 @@ public class Controller {
 	public void deleteThisActionItem() {
 		String name = actionItemList.getValue();
 		String query = "delete from actionitems where name = '" + name + "'";
-		db.update(query);
-		actionItemList.getItems().remove(name);
+		if(actionItem.delete(query)) {
+			actionItemList.getItems().remove(name);
+			try {
+				actionItemList.getSelectionModel().clearSelection();
+				actionItemName.clear();
+				actionItemDescription.clear();
+				actionItemResolution.clear();
+				actionItemCreationDate.setText("");
+				actionItemDueDate.getEditor().clear();
+				actionItemMember.getSelectionModel().clearSelection();
+				actionItemTeam.getSelectionModel().clearSelection();
+				actionItemStatus.getSelectionModel().clearSelection();
+				consoleActionItems.getItems().remove(name);
+			} catch(Exception ex) {
+
+			}
+		}
+	}
+	
+	public void displayTeams() {
+		String name = membersKnown.getSelectionModel().getSelectedItem();
+		String query = "select teamname from teams where teamname NOT IN (select teamname from memberTeam where membername='" + name + "')";
+		System.out.println(query);
+		membersTeamsAvailable.getItems().clear();
+		ResultSet rs = db.query(query);
 		try {
-			actionItemList.getSelectionModel().clearSelection();
-			actionItemName.clear();
-			actionItemDescription.clear();
-			actionItemResolution.clear();
-			actionItemCreationDate.setText("");
-			actionItemDueDate.getEditor().clear();
-			actionItemMember.getSelectionModel().clearSelection();
-			actionItemTeam.getSelectionModel().clearSelection();
-			actionItemStatus.getSelectionModel().clearSelection();
-		} catch(Exception ex) {
-			
+			while(rs.next()) {
+				System.out.println(rs.getString("teamname"));
+				membersTeamsAvailable.getItems().add(rs.getString("teamname"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		query = "select teamname from memberTeam where membername='" + name + "'";
+		membersTeamsFor.getItems().clear();
+		rs = db.query(query);
+		try {
+			while(rs.next()) {
+				membersTeamsFor.getItems().add(rs.getString("teamname"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -211,7 +229,6 @@ public class Controller {
 		actionItemList.setItems(namesList);
 		actionItemList.getSelectionModel().clearAndSelect(0);
 		consoleActionItems.setItems(namesList);
-		System.out.println(namesList);
 		selectedName = actionItemList.getValue();
 	}
 	
@@ -234,7 +251,6 @@ public class Controller {
 	public void initializeTeams() {
 		String query = "select * from teams";
 		ArrayList<String> listT = new ArrayList<String>();
-		ObservableList<String> teamList = FXCollections.observableArrayList(listT);
 		ResultSet rs = db.query(query);
 		try {
 			while(rs.next()) {
@@ -244,6 +260,7 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		ObservableList<String> teamList = FXCollections.observableArrayList(listT);
 		teamsKnown.setItems(teamList);
 	}
 	
@@ -271,6 +288,24 @@ public class Controller {
 			e.printStackTrace();
 		}
 		selectedName = name;
+	}
+	
+	public void removeMember() {
+		String name = membersKnown.getSelectionModel().getSelectedItem();
+		if(members.removeMember(name) != 0) {
+			membersNewName.setText(name);
+			membersKnown.getItems().remove(name);
+			actionItemMember.getItems().remove(name);
+		}
+	}
+	
+	public void removeTeam() {
+		String name = teamsKnown.getSelectionModel().getSelectedItem();
+		if(teams.removeTeam(name) != 0) {
+			teamNewName.setText(name);
+			teamsKnown.getItems().remove(name);
+			actionItemTeam.getItems().remove(name);
+		}
 	}
 	
 	public void selectedListItem() {

@@ -101,6 +101,31 @@ public class ActionItems {
 		return this.team;
 	}
 	
+	
+	public boolean delete(String name) {
+		String query = "delete from actionitems where name = '" + name + "'";
+		int i = dbActions.update(query);
+		if(i == 0) {
+			try {
+				dbActions.rollback();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return false;
+		}
+		else {
+			try {
+				dbActions.save();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return true;
+		}
+		
+	}
+	
 	public boolean storeActionItem() {
 		System.out.println("creating a new item");
 		
