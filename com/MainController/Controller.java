@@ -64,6 +64,76 @@ public class Controller {
 	private ActionItems actionItem = new ActionItems();
 	private Database db;
 	private String selectedName;
+	
+	public void clearTheForm() {
+		try {
+			actionItemList.getSelectionModel().clearSelection();
+			actionItemName.clear();
+			actionItemDescription.clear();
+			actionItemResolution.clear();
+			actionItemCreationDate.setText("");
+			actionItemDueDate.getEditor().clear();
+			actionItemMember.getSelectionModel().clearSelection();
+			actionItemTeam.getSelectionModel().clearSelection();
+			actionItemStatus.getSelectionModel().clearSelection();
+		} catch(Exception ex) {
+			
+		}
+	}
+	
+	public void createActionItem() throws InsufficientCredentialsException {
+		String name = actionItemName.getText();
+		String desc = actionItemDescription.getText();
+		String res = actionItemResolution.getText();
+		LocalDate lDue = actionItemDueDate.getValue();
+		Instant instant = lDue.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+		Date due = Date.from(instant);
+		String stat = actionItemStatus.getValue();
+		int status;
+		if(stat.charAt(0) == 'o' || stat.charAt(0) == 'O') status = 1;
+		else status = 0;
+		String member = actionItemMember.getValue();
+		String team = actionItemTeam.getValue();
+		actionItem.setName(name);
+		actionItem.setDesc(desc);
+		actionItem.setResolution(res);
+		actionItem.setDueDate(due);
+		actionItem.setMember(member);
+		actionItem.setTeam(team);
+		actionItem.setStatus(status);
+		if(actionItem.storeActionItem()) {
+			actionItemName.clear();
+			actionItemDescription.clear();
+			actionItemResolution.clear();
+			actionItemDueDate.getEditor().clear();
+			actionItemList.getItems().add(name);
+		}
+	}
+	
+	public void deleteThisActionItem() {
+		String name = actionItemList.getValue();
+		String query = "delete from actionitems where name = '" + name + "'";
+		db.update(query);
+		actionItemList.getItems().remove(name);
+		try {
+			actionItemList.getSelectionModel().clearSelection();
+			actionItemName.clear();
+			actionItemDescription.clear();
+			actionItemResolution.clear();
+			actionItemCreationDate.setText("");
+			actionItemDueDate.getEditor().clear();
+			actionItemMember.getSelectionModel().clearSelection();
+			actionItemTeam.getSelectionModel().clearSelection();
+			actionItemStatus.getSelectionModel().clearSelection();
+		} catch(Exception ex) {
+			
+		}
+	}
+	
+	public void doQuit() {
+		System.exit(1);
+	}
+	
 	public void initialize() {
 		db = new Database();
 		String query = "select name from actionitems";
@@ -84,34 +154,7 @@ public class Controller {
 		selectedName = actionItemList.getValue();
 	}
 	
-	public void createActionItem() throws InsufficientCredentialsException {
-			String name = actionItemName.getText();
-			String desc = actionItemDescription.getText();
-			String res = actionItemResolution.getText();
-			LocalDate lDue = actionItemDueDate.getValue();
-			Instant instant = lDue.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
-			Date due = Date.from(instant);
-			String stat = actionItemStatus.getValue();
-			int status;
-			if(stat.charAt(0) == 'o' || stat.charAt(0) == 'O') status = 1;
-			else status = 0;
-			String member = actionItemMember.getValue();
-			String team = actionItemTeam.getValue();
-			actionItem.setName(name);
-			actionItem.setDesc(desc);
-			actionItem.setResolution(res);
-			actionItem.setDueDate(due);
-			actionItem.setMember(member);
-			actionItem.setTeam(team);
-			actionItem.setStatus(status);
-			if(actionItem.storeActionItem()) {
-				actionItemName.clear();
-				actionItemDescription.clear();
-				actionItemResolution.clear();
-				actionItemDueDate.getEditor().clear();
-				actionItemList.getItems().add(name);
-			}
-	}
+	
 	
 	public void loadActionItem() {
 		String name = actionItemList.getValue();
@@ -138,45 +181,30 @@ public class Controller {
 		selectedName = name;
 	}
 	
-	public void deleteThisActionItem() {
-		String name = actionItemList.getValue();
-		String query = "delete from actionitems where name = '" + name + "'";
-		db.update(query);
-		actionItemList.getItems().remove(name);
+	public void selectedListItem() {
+		String listname = consoleActionItems.getSelectionModel().getSelectedItem();
+		String query = "select * from actionitems where name ='" + listname + "'";
+		ResultSet rs = db.query(query);
 		try {
-			actionItemList.getSelectionModel().clearSelection();
-			actionItemName.clear();
-			actionItemDescription.clear();
-			actionItemResolution.clear();
-			actionItemCreationDate.setText("");
-			actionItemDueDate.getEditor().clear();
-			actionItemMember.getSelectionModel().clearSelection();
-			actionItemTeam.getSelectionModel().clearSelection();
-			actionItemStatus.getSelectionModel().clearSelection();
-		} catch(Exception ex) {
-			
-		}
-	}
-	
-	public void clearTheForm() {
-		try {
-			actionItemList.getSelectionModel().clearSelection();
-			actionItemName.clear();
-			actionItemDescription.clear();
-			actionItemResolution.clear();
-			actionItemCreationDate.setText("");
-			actionItemDueDate.getEditor().clear();
-			actionItemMember.getSelectionModel().clearSelection();
-			actionItemTeam.getSelectionModel().clearSelection();
-			actionItemStatus.getSelectionModel().clearSelection();
-		} catch(Exception ex) {
-			
+			if(rs.next()) {
+				consoleItemName.setText(listname);
+				consoleItemDesc.setText(rs.getString("description"));
+				consoleItemResolution.setText(rs.getString("resolution"));
+				consoleCreationDate.setText(rs.getString("creation"));
+				consoleDueDate.setText(rs.getString("due"));
+				consoleMember.setText(rs.getString("member"));
+				consoleTeam.setText(rs.getString("team"));
+				int i = Integer.parseInt(rs.getString("status"));
+				if(i == 0) consoleStatus.setText("closed");
+				else consoleStatus.setText("open");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	public void updateActionItem() {
-		System.out.println("on click update");
-		
 		try {
 			actionItem.setName(actionItemName.getText());
 			actionItem.setDesc(actionItemDescription.getText());
@@ -207,35 +235,4 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
-	
-	public void selectedListItem() {
-		String listname = consoleActionItems.getSelectionModel().getSelectedItem();
-		String query = "select * from actionitems where name ='" + listname + "'";
-		System.out.println(listname);
-		ResultSet rs = db.query(query);
-		try {
-			if(rs.next()) {
-				consoleItemName.setText(listname);
-				consoleItemDesc.setText(rs.getString("description"));
-				consoleItemResolution.setText(rs.getString("resolution"));
-				consoleCreationDate.setText(rs.getString("creation"));
-				consoleDueDate.setText(rs.getString("due"));
-				consoleMember.setText(rs.getString("member"));
-				consoleTeam.setText(rs.getString("team"));
-				int i = Integer.parseInt(rs.getString("status"));
-				if(i == 0) consoleStatus.setText("closed");
-				else consoleStatus.setText("open");
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public void doQuit() {
-		System.exit(1);
-	}
-	
-	
-	
 }
