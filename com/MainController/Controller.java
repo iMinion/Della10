@@ -95,6 +95,18 @@ public class Controller {
 		
 	}
 	
+	public void addAssociation() {
+		String team = teamsKnown.getSelectionModel().getSelectedItem();
+		String member = teamsMembersAvailable.getSelectionModel().getSelectedItem();
+		String query = "insert into memberTeam (membername,teamname) value ('" + member + "', '" + team + "')";
+		int i = db.update(query);
+		if(i != 0) {
+			teamsMembersAvailable.getItems().remove(member);
+			teamsMembersFor.getItems().add(member);
+		}
+	}
+	
+	
 	public void addMember() throws InsufficientCredentialsException {
 		String name = membersNewName.getText();
 		if(members.addMember(name) != 0) {
@@ -178,6 +190,30 @@ public class Controller {
 			} catch(Exception ex) {
 
 			}
+		}
+	}
+	
+	public void displayMembers() {
+		String name = teamsKnown.getSelectionModel().getSelectedItem();
+		String query = "select membername from members where membername NOT IN (select membername from memberTeam where membername='" + name + "')";
+		teamsMembersAvailable.getItems().clear();
+		ResultSet rs = db.query(query);
+		try {
+			while(rs.next()) {
+				teamsMembersAvailable.getItems().add(rs.getString("membername"));
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		query = "select membername from memberTeam where teamname ='" + name + "'";
+		teamsMembersFor.getItems().clear();
+		rs = db.query(query);
+		try {
+			while(rs.next()) {
+				teamsMembersFor.getItems().add(rs.getString("membername"));
+			}
+		}catch(SQLException ex) {
+			ex.printStackTrace();
 		}
 	}
 	
@@ -311,6 +347,15 @@ public class Controller {
 			membersNewName.setText(name);
 			membersKnown.getItems().remove(name);
 			actionItemMember.getItems().remove(name);
+		}
+	}
+	
+	public void removeAssociation() {
+		String name = teamsKnown.getSelectionModel().getSelectedItem();
+		if(teams.removeTeam(name) != 0) {
+			teamNewName.setText(name);
+			teamsKnown.getItems().remove(name);
+			actionItemTeam.getItems().remove(name);
 		}
 	}
 	

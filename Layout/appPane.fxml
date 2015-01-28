@@ -574,7 +574,7 @@
 										</VBox>
 										<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="119.0" prefWidth="189.0" spacing="10.0">
 											<children>
-												<Button mnemonicParsing="false" text="Add association -&gt;">
+												<Button mnemonicParsing="false" onAction="#addAssociation" text="Add association -&gt;">
 													<padding>
 														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 													</padding>
@@ -582,7 +582,7 @@
 														<Insets left="30.0" />
 													</VBox.margin>
 												</Button>
-												<Button minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="178.0" text="&lt;- Remove association">
+												<Button minWidth="-Infinity" mnemonicParsing="false" onAction="#removeAssociation" prefHeight="36.0" prefWidth="178.0" text="&lt;- Remove association">
 													<padding>
 														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 													</padding>
@@ -629,7 +629,7 @@
 												<Font name="System Bold" size="13.0" />
 											</font>
 										</Text>
-                              <ListView fx:id="teamsKnown" prefHeight="200.0" prefWidth="200.0" />
+                              <ListView fx:id="teamsKnown" onMouseClicked="#displayTeams" prefHeight="200.0" prefWidth="200.0" />
 									</children>
 								</VBox>
 								<Text layoutX="240.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="to see member associations." />
