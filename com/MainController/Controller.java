@@ -41,6 +41,25 @@ public class Controller {
 	private ComboBox<String> actionItemStatus;
 	@FXML
 	private ComboBox<String> actionItemTeam;
+	@FXML
+	private ListView<String> consoleActionItems;
+	@FXML
+	private TextField consoleItemName;
+	@FXML
+	private TextArea consoleItemDesc;
+	@FXML
+	private TextArea consoleItemResolution;
+	@FXML
+	private Text consoleCreationDate;
+	@FXML
+	private Text consoleDueDate;
+	@FXML
+	private Text consoleStatus;
+	@FXML
+	private Text consoleMember;
+	@FXML
+	private Text consoleTeam;
+	
 	
 	private ActionItems actionItem = new ActionItems();
 	private Database db;
@@ -59,9 +78,9 @@ public class Controller {
 			e.printStackTrace();
 		}
 		ObservableList<String> namesList = FXCollections.observableArrayList(list);
-		System.out.println(namesList);
 		actionItemList.setItems(namesList);
 		actionItemList.getSelectionModel().clearAndSelect(0);
+		consoleActionItems.setItems(namesList);
 		selectedName = actionItemList.getValue();
 	}
 	
@@ -189,8 +208,34 @@ public class Controller {
 		}
 	}
 	
+	public void selectedListItem() {
+		String listname = consoleActionItems.getSelectionModel().getSelectedItem();
+		String query = "select * from actionitems where name ='" + listname + "'";
+		System.out.println(listname);
+		ResultSet rs = db.query(query);
+		try {
+			if(rs.next()) {
+				consoleItemName.setText(listname);
+				consoleItemDesc.setText(rs.getString("description"));
+				consoleItemResolution.setText(rs.getString("resolution"));
+				consoleCreationDate.setText(rs.getString("creation"));
+				consoleDueDate.setText(rs.getString("due"));
+				consoleMember.setText(rs.getString("member"));
+				consoleTeam.setText(rs.getString("team"));
+				int i = Integer.parseInt(rs.getString("status"));
+				if(i == 0) consoleStatus.setText("closed");
+				else consoleStatus.setText("open");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void doQuit() {
 		System.exit(1);
 	}
+	
+	
 	
 }

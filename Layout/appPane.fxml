@@ -78,7 +78,7 @@
 								<VBox layoutX="19.0" layoutY="18.0" prefHeight="492.0" prefWidth="399.0" spacing="10.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="ActionItems: " />
-                              <ListView fx:id="consoleActionItems" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="399.0" />
+                              <ListView fx:id="consoleActionItems" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#selectedListItem" prefHeight="200.0" prefWidth="399.0" />
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Selected Action Item" />
 										<HBox prefHeight="28.0" prefWidth="399.0">
 											<children>
@@ -131,7 +131,7 @@
                                           <Insets left="30.0" />
                                        </HBox.margin>
                                     </Text>
-                                    <Text fx:id="consoleDueDate" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                    <Text fx:id="consoleDueDate" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="103.0" />
                                  </children>
                                  <VBox.margin>
                                     <Insets />
@@ -145,7 +145,7 @@
                                           <Insets />
                                        </HBox.margin>
                                     </Text>
-                                    <Text fx:id="consoleStatus" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                    <Text fx:id="consoleStatus" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="120.0" />
                                  </children>
                               </HBox>
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Member">
