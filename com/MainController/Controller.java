@@ -87,6 +87,8 @@ public class Controller {
 		String name = membersNewName.getText();
 		if(members.addMember(name) != 0) {
 			membersNewName.setText("");
+			membersKnown.getItems().add(name);
+//			actionItemMember.getItems().add(name);
 		}
 	}
 	
@@ -94,6 +96,8 @@ public class Controller {
 		String name = teamNewName.getText();
 		if(teams.addTeam(name) != 0) {
 			teamNewName.setText("");
+			teamsKnown.getItems().add(name);
+//			actionItemTeam.getItems().add(name);
 		}
 	}
 	
@@ -101,6 +105,8 @@ public class Controller {
 		String name = membersKnown.getSelectionModel().getSelectedItem();
 		if(members.removeMember(name) != 0) {
 			membersNewName.setText(name);
+			membersKnown.getItems().remove(name);
+//			actionItemMember.getItems().remove(name);
 		}
 	}
 	
@@ -108,6 +114,8 @@ public class Controller {
 		String name = teamsKnown.getSelectionModel().getSelectedItem();
 		if(teams.removeTeam(name) != 0) {
 			teamNewName.setText(name);
+			teamsKnown.getItems().remove(name);
+			actionItemTeam.getItems().remove(name);
 		}
 	}
 	
@@ -197,7 +205,34 @@ public class Controller {
 		actionItemList.setItems(namesList);
 		actionItemList.getSelectionModel().clearAndSelect(0);
 		consoleActionItems.setItems(namesList);
+		System.out.println(namesList);
 		selectedName = actionItemList.getValue();
+		query = "select * from members";
+		ArrayList<String> listM = new ArrayList<String>();
+		rs = db.query(query);
+		try {
+			while(rs.next()) {
+				listM.add(rs.getString("membername"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ObservableList<String> memList = FXCollections.observableArrayList(listM);
+		membersKnown.setItems(memList);
+		query = "select * from teams";
+		ArrayList<String> listT = new ArrayList<String>();
+		ObservableList<String> teamList = FXCollections.observableArrayList(listT);
+		rs = db.query(query);
+		try {
+			while(rs.next()) {
+				listT.add(rs.getString("teamname"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		teamsKnown.setItems(teamList);
 	}
 	
 	
