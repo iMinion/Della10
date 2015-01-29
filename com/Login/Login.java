@@ -21,7 +21,7 @@ import static application.Main.stage;
 
 public class Login implements Initializable{
 	
-	final String url = "jdbc:mysql://localhost/Della";
+	final String url = "jdbc:mysql://10.10.11.53/della";
 	final String driver = "com.mysql.jdbc.Driver";
 	final String uName = "root";
 	final String pWord = "root";
