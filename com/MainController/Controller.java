@@ -66,6 +66,14 @@ public class Controller {
 	private ListView<String> membersTeamsAvailable;
 	@FXML
 	private ListView<String> membersTeamsFor;
+	@FXML
+	private Button membersAddAffiliation;
+	@FXML
+	private Button membersRemoveAffiliation;
+	@FXML
+	private Button membersAddNew;
+	@FXML
+	private Button membersRemove;
 	
 	@FXML
 	private TextField teamNewName;
@@ -75,7 +83,14 @@ public class Controller {
 	private ListView<String> teamsMembersAvailable;
 	@FXML
 	private ListView<String> teamsMembersFor;
-	
+	@FXML
+	private Button teamsAddNew;
+	@FXML
+	private Button teamsRemove;
+	@FXML
+	private Button teamsAddAssociation;
+	@FXML
+	private Button teamsRemoveAssociation;
 	
 	private ActionItems actionItem = new ActionItems();
 	private Members members = new Members();
@@ -86,14 +101,16 @@ public class Controller {
 	public void addAffiliation() {
 		String member = membersKnown.getSelectionModel().getSelectedItem();
 		String team = membersTeamsAvailable.getSelectionModel().getSelectedItem();
-		System.out.println(member);
-		
 		String query = "insert into memberTeam (membername,teamname) values ('"+member+"', '"+team+"')";
 		System.out.println(query);
 		int i = db.update(query);
 		if(i != 0) {
 			membersTeamsAvailable.getItems().remove(team);
 			membersTeamsFor.getItems().add(team);
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
 		}
 		
 	}
@@ -104,9 +121,12 @@ public class Controller {
 		String query = "insert into memberTeam (membername,teamname) values ('" + member + "', '" + team + "')";
 		int i = db.update(query);
 		if(i != 0) {
-			System.out.println("hello");
 			teamsMembersAvailable.getItems().remove(member);
 			teamsMembersFor.getItems().add(member);
+			teamsAddAssociation.setDisable(true);
+			teamsAddNew.setDisable(true);
+			teamsRemove.setDisable(true);
+			teamsRemoveAssociation.setDisable(true);
 		}
 	}
 	
@@ -130,6 +150,10 @@ public class Controller {
 			}
 			membersKnown.setItems(mem);
 			actionItemMember.setItems(mem);
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
 		}
 	}
 	
@@ -152,12 +176,13 @@ public class Controller {
 			}
 			teamsKnown.setItems(mem);
 			actionItemTeam.setItems(mem);
-			teamsKnown.getItems().add(name);
-			actionItemTeam.getItems().add(name);
+			teamsAddAssociation.setDisable(true);
+			teamsAddNew.setDisable(true);
+			teamsRemove.setDisable(true);
+			teamsRemoveAssociation.setDisable(true);
 		}
 	}
-	
-	
+		
 	public void clearTheForm() {
 		try {
 			actionItemList.getSelectionModel().clearSelection();
@@ -226,6 +251,7 @@ public class Controller {
 	}
 	
 	public void displayMembers() {
+		teamsAddNew.setDisable(true);
 		String name = teamsKnown.getSelectionModel().getSelectedItem();
 		String query = "select membername from members where membername NOT IN (select membername from memberTeam where teamname='" + name + "')";
 		System.out.println(query);
@@ -249,9 +275,13 @@ public class Controller {
 		}catch(SQLException ex) {
 			ex.printStackTrace();
 		}
+		teamsRemove.setDisable(false);
+		teamsAddAssociation.setDisable(true);
+		teamsRemoveAssociation.setDisable(true);
 	}
 	
 	public void displayTeams() {
+		membersAddNew.setDisable(true);
 		String name = membersKnown.getSelectionModel().getSelectedItem();
 		String query = "select teamname from teams where teamname NOT IN (select teamname from memberTeam where membername='"+name+"')";
 		membersTeamsAvailable.getItems().clear();
@@ -275,6 +305,9 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		membersRemove.setDisable(true);
+		membersAddAffiliation.setDisable(true);
+		membersAddNew.setDisable(true);
 	}
 	
 	public void doQuit() {
@@ -288,7 +321,7 @@ public class Controller {
 		initializeTeams();
 	}
 	
-	public void initializeActionItems() {
+	private void initializeActionItems() {
 		String query = "select name from actionitems";
 		ResultSet rs = db.query(query);
 		ArrayList<String> list = new ArrayList<String>();
@@ -307,7 +340,7 @@ public class Controller {
 		selectedName = actionItemList.getValue();
 	}
 	
-	public void initializeMembers() {
+	private void initializeMembers() {
 		String query = "select * from members";
 		ArrayList<String> listM = new ArrayList<String>();
 		ResultSet rs = db.query(query);
@@ -323,7 +356,7 @@ public class Controller {
 		membersKnown.setItems(memList);
 	}
 	
-	public void initializeTeams() {
+	private void initializeTeams() {
 		String query = "select * from teams";
 		ArrayList<String> listT = new ArrayList<String>();
 		ResultSet rs = db.query(query);
@@ -340,6 +373,7 @@ public class Controller {
 	}
 	
 	public void loadActionItem() {
+
 		String name = actionItemList.getValue();
 		String query = "select * from actionitems where name = '" + name + "'";
 		ResultSet rs = db.query(query);
@@ -363,6 +397,27 @@ public class Controller {
 		}
 		selectedName = name;
 	}
+
+	public void membersDisableAffiliation() {
+		membersAddAffiliation.setDisable(true);
+		membersAddNew.setDisable(true);
+		membersRemove.setDisable(true);
+		membersRemoveAffiliation.setDisable(false);
+	}
+	
+	public void memberAddListEnable() {
+		membersAddAffiliation.setDisable(true);
+		membersAddNew.setDisable(false);
+		membersRemove.setDisable(true);
+		membersRemoveAffiliation.setDisable(true);
+	}
+	
+	public void memberEnableAffiliation() {
+		membersAddNew.setDisable(true);
+		membersAddAffiliation.setDisable(false);
+		membersRemove.setDisable(true);
+		membersRemoveAffiliation.setDisable(true);
+	}
 	
 	public void removeAffiliation() {
 		String member = membersKnown.getSelectionModel().getSelectedItem();
@@ -372,6 +427,25 @@ public class Controller {
 		if(i != 0) {
 			membersTeamsAvailable.getItems().add(team);
 			membersTeamsFor.getItems().remove(team);
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+			membersRemove.setDisable(true);
+		}
+	}
+	
+	public void removeAssociation() {
+		String team = teamsKnown.getSelectionModel().getSelectedItem();
+		String member = teamsMembersFor.getSelectionModel().getSelectedItem();
+		String query = "delete from memberTeam where membername='" + member + "' and teamname='" + team + "'";;
+		int i = db.update(query);
+		if(i != 0) {
+			teamsMembersAvailable.getItems().add(member);
+			teamsMembersFor.getItems().remove(member);
+			teamsAddAssociation.setDisable(true);
+			teamsAddNew.setDisable(true);
+			teamsRemove.setDisable(true);
+			teamsRemoveAssociation.setDisable(true);
 		}
 	}
 	
@@ -381,15 +455,10 @@ public class Controller {
 			membersNewName.setText(name);
 			membersKnown.getItems().remove(name);
 			actionItemMember.getItems().remove(name);
-		}
-	}
-	
-	public void removeAssociation() {
-		String name = teamsKnown.getSelectionModel().getSelectedItem();
-		if(teams.removeTeam(name) != 0) {
-			teamNewName.setText(name);
-			teamsKnown.getItems().remove(name);
-			actionItemTeam.getItems().remove(name);
+			membersAddAffiliation.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+			membersRemove.setDisable(true);
+			membersAddNew.setDisable(false);
 		}
 	}
 	
@@ -399,6 +468,10 @@ public class Controller {
 			teamNewName.setText(name);
 			teamsKnown.getItems().remove(name);
 			actionItemTeam.getItems().remove(name);
+			teamsAddAssociation.setDisable(true);
+			teamsAddNew.setDisable(false);
+			teamsRemove.setDisable(true);
+			teamsRemoveAssociation.setDisable(true);
 		}
 	}
 	
@@ -423,6 +496,27 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public void teamAddListEnable() {
+		teamsRemove.setDisable(true);
+		teamsAddAssociation.setDisable(true);
+		teamsRemoveAssociation.setDisable(true);
+		teamsAddNew.setDisable(false);
+	}
+	
+	public void teamsDisableAssociation() {
+		teamsAddAssociation.setDisable(true);
+		teamsAddNew.setDisable(true);
+		teamsRemoveAssociation.setDisable(false);
+		teamsRemove.setDisable(true);
+	}
+	
+	public void teamEnableAssociation() {
+		teamsAddAssociation.setDisable(false);
+		teamsRemoveAssociation.setDisable(true);
+		teamsRemove.setDisable(true);
+		teamsAddNew.setDisable(true);
 	}
 	
 	public void updateActionItem() {

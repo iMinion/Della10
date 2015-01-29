@@ -402,12 +402,12 @@
 														<Font name="System Bold" size="13.0" />
 													</font>
 												</Text>
-                                    <ListView fx:id="membersTeamsAvailable" prefHeight="200.0" prefWidth="200.0" />
+                                    <ListView fx:id="membersTeamsAvailable" onMouseClicked="#memberEnableAffiliation" prefHeight="200.0" prefWidth="200.0" />
 											</children>
 										</VBox>
 										<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="119.0" prefWidth="189.0" spacing="10.0">
 											<children>
-												<Button mnemonicParsing="false" onAction="#addAffiliation" text="Add Affiliation -&gt;">
+												<Button fx:id="membersAddAffiliation" disable="true" mnemonicParsing="false" onAction="#addAffiliation" text="Add Affiliation -&gt;">
 													<padding>
 														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 													</padding>
@@ -415,7 +415,7 @@
 														<Insets left="30.0" />
 													</VBox.margin>
 												</Button>
-												<Button mnemonicParsing="false" onAction="#removeAffiliation" text="&lt;- Remove Affiliation">
+												<Button fx:id="membersRemoveAffiliation" disable="true" mnemonicParsing="false" onAction="#removeAffiliation" text="&lt;- Remove Affiliation">
 													<padding>
 														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 													</padding>
@@ -435,7 +435,7 @@
 														<Font name="System Bold" size="13.0" />
 													</font>
 												</Text>
-                                    <ListView fx:id="membersTeamsFor" prefHeight="200.0" prefWidth="200.0" />
+                                    <ListView fx:id="membersTeamsFor" onMouseClicked="#membersDisableAffiliation" prefHeight="200.0" prefWidth="200.0" />
 											</children>
 											<padding>
 												<Insets left="15.0" />
@@ -472,7 +472,7 @@
 								<Text layoutX="248.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on individual's name" />
 								<VBox layoutX="245.0" layoutY="92.0" prefHeight="92.0" prefWidth="170.0" spacing="10.0">
 									<children>
-										<Button mnemonicParsing="false" onAction="#addMember" text="Add to List -&gt;">
+										<Button fx:id="membersAddNew" disable="true" mnemonicParsing="false" onAction="#addMember" text="Add to List -&gt;">
 											<padding>
 												<Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
 											</padding>
@@ -480,7 +480,7 @@
 												<Insets left="20.0" />
 											</VBox.margin>
 										</Button>
-										<Button mnemonicParsing="false" onAction="#removeMember" text="&lt;- Remove from List">
+										<Button fx:id="membersRemove" disable="true" mnemonicParsing="false" onAction="#removeMember" text="&lt;- Remove from List">
 											<padding>
 												<Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
 											</padding>
@@ -493,7 +493,7 @@
 								<VBox layoutX="4.0" layoutY="80.0" prefHeight="236.0" prefWidth="247.0" spacing="10.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name of someone new" />
-										<TextField fx:id="membersNewName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="168.0" />
+										<TextField fx:id="membersNewName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#memberAddListEnable" prefHeight="26.0" prefWidth="168.0" />
 										<VBox prefHeight="80.0" prefWidth="200.0">
 											<children>
 												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To add a name to the list:">
@@ -569,12 +569,12 @@
 														<Font name="System Bold" size="13.0" />
 													</font>
 												</Text>
-                                    <ListView fx:id="teamsMembersAvailable" prefHeight="200.0" prefWidth="200.0" />
+                                    <ListView fx:id="teamsMembersAvailable" onMouseClicked="#teamEnableAssociation" prefHeight="200.0" prefWidth="200.0" />
 											</children>
 										</VBox>
 										<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="119.0" prefWidth="189.0" spacing="10.0">
 											<children>
-												<Button mnemonicParsing="false" onAction="#addAssociation" text="Add association -&gt;">
+												<Button fx:id="teamsAddAssociation" disable="true" mnemonicParsing="false" onAction="#addAssociation" text="Add association -&gt;">
 													<padding>
 														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 													</padding>
@@ -582,7 +582,7 @@
 														<Insets left="30.0" />
 													</VBox.margin>
 												</Button>
-												<Button minWidth="-Infinity" mnemonicParsing="false" onAction="#removeAssociation" prefHeight="36.0" prefWidth="178.0" text="&lt;- Remove association">
+												<Button fx:id="teamsRemoveAssociation" disable="true" minWidth="-Infinity" mnemonicParsing="false" onAction="#removeAssociation" prefHeight="36.0" prefWidth="178.0" text="&lt;- Remove association">
 													<padding>
 														<Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
 													</padding>
@@ -602,7 +602,7 @@
 														<Font name="System Bold" size="13.0" />
 													</font>
 												</Text>
-                                    <ListView fx:id="teamsMembersFor" prefHeight="200.0" prefWidth="200.0" />
+                                    <ListView fx:id="teamsMembersFor" onMouseClicked="#teamsDisableAssociation" prefHeight="200.0" prefWidth="200.0" />
 											</children>
 										</VBox>
 									</children>
@@ -636,7 +636,7 @@
 								<Text layoutX="252.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Click on an team's name" />
 								<VBox layoutX="244.0" layoutY="89.0" prefHeight="92.0" prefWidth="170.0" spacing="10.0">
 									<children>
-										<Button mnemonicParsing="false" onAction="#addTeam" text="Add to List -&gt;">
+										<Button fx:id="teamsAddNew" disable="true" mnemonicParsing="false" onAction="#addTeam" text="Add to List -&gt;">
 											<padding>
 												<Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
 											</padding>
@@ -644,7 +644,7 @@
 												<Insets left="20.0" />
 											</VBox.margin>
 										</Button>
-										<Button mnemonicParsing="false" onAction="#removeTeam" text="&lt;- Remove from List">
+										<Button fx:id="teamsRemove" disable="true" mnemonicParsing="false" onAction="#removeTeam" text="&lt;- Remove from List">
 											<padding>
 												<Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
 											</padding>
@@ -657,7 +657,7 @@
 								<VBox layoutX="5.0" layoutY="51.0" prefHeight="236.0" prefWidth="247.0" spacing="10.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Name of a new team" wrappingWidth="132.912109375" />
-										<TextField fx:id="teamNewName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="168.0" />
+										<TextField fx:id="teamNewName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyTyped="#teamAddListEnable" prefHeight="26.0" prefWidth="168.0" />
 										<VBox prefHeight="80.0" prefWidth="200.0">
 											<children>
 												<Text strokeType="OUTSIDE" strokeWidth="0.0" text="To add a name to the list:">
