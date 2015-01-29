@@ -86,7 +86,10 @@ public class Controller {
 	public void addAffiliation() {
 		String member = membersKnown.getSelectionModel().getSelectedItem();
 		String team = membersTeamsAvailable.getSelectionModel().getSelectedItem();
-		String query = "insert into memberTeam (membername,teamname) value ('" + member + "', '" + team + "')";
+		System.out.println(member);
+		
+		String query = "insert into memberTeam (membername,teamname) values ('"+member+"', '"+team+"')";
+		System.out.println(query);
 		int i = db.update(query);
 		if(i != 0) {
 			membersTeamsAvailable.getItems().remove(team);
@@ -96,11 +99,12 @@ public class Controller {
 	}
 	
 	public void addAssociation() {
-		String team = teamsKnown.getSelectionModel().getSelectedItem();
-		String member = teamsMembersAvailable.getSelectionModel().getSelectedItem();
-		String query = "insert into memberTeam (membername,teamname) value ('" + member + "', '" + team + "')";
+		String team = teamsKnown.getSelectionModel().getSelectedItem().toString();
+		String member = teamsMembersAvailable.getSelectionModel().getSelectedItem().toString();
+		String query = "insert into memberTeam (membername,teamname) values ('" + member + "', '" + team + "')";
 		int i = db.update(query);
 		if(i != 0) {
+			System.out.println("hello");
 			teamsMembersAvailable.getItems().remove(member);
 			teamsMembersFor.getItems().add(member);
 		}
@@ -111,8 +115,21 @@ public class Controller {
 		String name = membersNewName.getText();
 		if(members.addMember(name) != 0) {
 			membersNewName.setText("");
-			membersKnown.getItems().add(name);
-			actionItemMember.getItems().add(name);
+			String query = "select * from members";
+			ResultSet rs = db.query(query);
+			membersKnown.getItems().clear();
+			actionItemMember.getItems().clear();
+			ObservableList<String> mem = FXCollections.observableArrayList();
+			try {
+				while(rs.next()) {
+					mem.add(rs.getString("membername"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			membersKnown.setItems(mem);
+			actionItemMember.setItems(mem);
 		}
 	}
 	
@@ -120,6 +137,7 @@ public class Controller {
 		String name = teamNewName.getText();
 		if(teams.addTeam(name) != 0) {
 			teamNewName.setText("");
+			
 			teamsKnown.getItems().add(name);
 			actionItemTeam.getItems().add(name);
 		}
@@ -201,6 +219,7 @@ public class Controller {
 		ResultSet rs = db.query(query);
 		try {
 			while(rs.next()) {
+				System.out.println(rs.getString("membername"));
 				teamsMembersAvailable.getItems().add(rs.getString("membername"));
 			}
 		} catch(SQLException e) {
