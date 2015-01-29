@@ -137,7 +137,21 @@ public class Controller {
 		String name = teamNewName.getText();
 		if(teams.addTeam(name) != 0) {
 			teamNewName.setText("");
-			
+			String query = "select * from teams";
+			ResultSet rs = db.query(query);
+			teamsKnown.getItems().clear();
+			actionItemTeam.getItems().clear();
+			ObservableList<String> mem = FXCollections.observableArrayList();
+			try {
+				while(rs.next()) {
+					mem.add(rs.getString("teamname"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			teamsKnown.setItems(mem);
+			actionItemTeam.setItems(mem);
 			teamsKnown.getItems().add(name);
 			actionItemTeam.getItems().add(name);
 		}
