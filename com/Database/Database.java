@@ -5,9 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
-
-
-
 public class Database {
 	private final String url = "jdbc:mysql://localhost/della";
 	private final String driver = "com.mysql.jdbc.Driver";
@@ -18,33 +15,14 @@ public class Database {
 	private Savepoint sp;
 	
 	
-	public Database() {
-		try {
-			Class.forName(driver).newInstance();
-			con = DriverManager.getConnection(url, uName, pWord);
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Database() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
+		Class.forName(driver).newInstance();
+		con = DriverManager.getConnection(url, uName, pWord);
+		System.out.println("hello");
 	}
 	
-	public boolean isDBReachable() {
-		try {
+	public boolean isDBReachable() throws SQLException {
 			return con.isValid(10);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
 	}
 	
 	public ResultSet query(String message) {

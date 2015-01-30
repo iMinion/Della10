@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -106,7 +108,7 @@ public class Controller {
 	private Team teams = new Team();
 	private String selectedName;
 	private boolean flag = false;
-	
+	Hashtable<String, ActionItems> contents;
 	public static Database db;
 	
 	public void addAffiliation() {
@@ -235,13 +237,14 @@ public class Controller {
 			actionItemResolution.clear();
 			actionItemDueDate.getEditor().clear();
 			actionItemList.getItems().add(name);
+			actionItemMember.getSelectionModel().clearSelection();
+			actionItemTeam.getSelectionModel().clearSelection();
 		}
 	}
 	
 	public void deleteThisActionItem() {
 		String name = actionItemList.getValue();
-		String query = "delete from actionitems where name = '" + name + "'";
-		if(actionItem.delete(query)) {
+		if(actionItem.delete(name)) {
 			actionItemList.getItems().remove(name);
 			try {
 				actionItemList.getSelectionModel().clearSelection();
@@ -325,27 +328,26 @@ public class Controller {
 	}
 	
 	public void enableActionItemButtons() {
-		System.out.println("enabling buttons");
 		deleteActionItemB.setDisable(true);
 		createActionItemB.setDisable(false);
 		updateActionItemB.setDisable(false);
 		clearForm.setDisable(false);
 	}
 	
-	public void initialize() {
+	public void initialize() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		db = new Database();
 		flag = db.isDBReachable();
-		System.out.println(flag);
 		initializeActionItems();
 		initializeMembers();
 		initializeTeams();
 	}
 	
 	private void initializeActionItems() {
+		ArrayList<String> list = new ArrayList<String>();
+		ObservableList<String> namesList;
 		if(flag) {
 			String query = "select name from actionitems";
 			ResultSet rs = db.query(query);
-			ArrayList<String> list = new ArrayList<String>();
 			try {
 				while(rs.next()) {
 					list.add(rs.getString("name"));
@@ -353,7 +355,7 @@ public class Controller {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			ObservableList<String> namesList = FXCollections.observableArrayList(list);
+			namesList = FXCollections.observableArrayList(list);
 			actionItemList.setItems(namesList);
 			consoleActionItems.setItems(namesList);
 			updateActionItemB.setDisable(true);
@@ -362,6 +364,14 @@ public class Controller {
 			deleteActionItemB.setDisable(true);
 		}
 		else {
+			contents = actionItem.deSerialize();
+			Enumeration<String> names = contents.keys();
+			while(names.hasMoreElements()) {
+				list.add(names.nextElement());
+			}
+			namesList = FXCollections.observableArrayList(list);
+			actionItemList.setItems(namesList);
+			consoleActionItems.setItems(namesList);
 			updateActionItemB.setDisable(true);
 			clearForm.setDisable(true);
 			createActionItemB.setDisable(true);
@@ -420,13 +430,13 @@ public class Controller {
 	}
 	
 	public void loadActionItem() throws InsufficientCredentialsException {
+		ActionItems aItem = new ActionItems();
+		String name = actionItemList.getValue();
 		if(flag) {
-			String name = actionItemList.getValue();
 			String query = "select * from actionitems where name = '" + name + "'";
 			ResultSet rs = db.query(query);
 			try {
 				if(rs.next()) {
-					ActionItems aItem = new ActionItems();
 					actionItemName.setText(rs.getString("name"));
 					actionItemDescription.setText(rs.getString("description"));
 					actionItemResolution.setText(rs.getString("resolution"));
@@ -439,14 +449,13 @@ public class Controller {
 					if(sta == 0) actionItemStatus.setValue("closed");
 					else actionItemStatus.setValue("open");
 					aItem.setName(rs.getString("name"));
-					aItem.setDesc(rs.getString("decription"));
+					aItem.setDesc(rs.getString("description"));
 					aItem.setStatus(Integer.parseInt(rs.getString("status")));
 					aItem.setResolution(rs.getString("resolution"));
-					aItem.setDueDate(rs.getDate("dueDate"));
+					aItem.setDueDate(rs.getDate("due"));
 					aItem.setMember(rs.getString("member"));
 					aItem.setTeam(rs.getString("team"));
 					aItem.setCreationDate(rs.getDate("creation"));
-					actionItem = aItem;
 				}
 				createActionItemB.setDisable(true);
 				deleteActionItemB.setDisable(false);
@@ -457,8 +466,20 @@ public class Controller {
 			selectedName = name;
 		}
 		else {
-			
+			aItem = contents.get(name);
+			actionItemName.setText(aItem.getName());
+			actionItemDescription.setText(aItem.getDescription());
+			actionItemResolution.setText(aItem.getResolution());
+//			System.out.println(aItem.getCreationDate().toString());
+			actionItemCreationDate.setText(aItem.getCreationDate().toString());
+			LocalDate dueD = LocalDate.parse(aItem.getDueDate().toString());
+			actionItemDueDate.setValue(dueD);
+			actionItemMember.setValue(aItem.getMember());
+			int sta = aItem.getStatus();
+			if(sta == 0) actionItemStatus.setValue("closed");
+			else actionItemStatus.setValue("open");
 		}
+		actionItem = aItem;
 	}
 
 	public void membersDisableAffiliation() {

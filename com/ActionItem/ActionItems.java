@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Hashtable;
 
@@ -133,7 +134,6 @@ public class ActionItems implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			contents.remove(name);
 			serializeActionItem();
 			return true;
 		}
@@ -164,13 +164,34 @@ public class ActionItems implements Serializable{
 		try {
 			FileOutputStream file = new FileOutputStream("actionItems.ser");
 			ObjectOutputStream out = new ObjectOutputStream(file);
-			contents.put(this.name, this);
+			String query = "select * from actionItems"; 
+			ResultSet rs = db.query(query);
+			ActionItems aItem = new ActionItems();
+			contents.clear();
+			while(rs.next()) {
+				aItem.setName(rs.getString("name"));
+				aItem.setDesc(rs.getString("description"));
+				aItem.setStatus(Integer.parseInt(rs.getString("status")));
+				aItem.setResolution(rs.getString("resolution"));
+				aItem.setDueDate(rs.getDate("due"));
+				aItem.setMember(rs.getString("member"));
+				aItem.setTeam(rs.getString("team"));
+				aItem.setCreationDate(rs.getDate("creation"));
+				contents.put(aItem.getName(), aItem);
+			}
 			out.writeObject(contents);
 			out.close();
+			System.out.println(contents);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InsufficientCredentialsException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -204,6 +225,11 @@ public class ActionItems implements Serializable{
 		}
 	}
 	
+	public String toString() {
+		return "name = '" + this.name + "', description = '" + description + "', resolution= '" + resolution
+				+ "', due = '" + this.dueDate + "', status = '" + this.status + "', member = '" + this.member + "', team ='" + this.team + "', creation = '" + this.creationDate;
+	}
+	
 	public boolean updateActionItem(String name) {
 		String query = "update actionitems set name = '" + this.name + "', description = '" + description + "', resolution= '" + resolution
 						+ "', due = '" + this.dueDate + "', status = '" + this.status + "', member = '" + this.member + "', team ='" + this.team + "'"
@@ -225,10 +251,8 @@ public class ActionItems implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			contents.remove(name);
-			contents.put(this.name, this);
+			serializeActionItem();
 			return true;
 		}
-		
 	}
 }
