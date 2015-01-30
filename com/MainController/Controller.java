@@ -111,6 +111,16 @@ public class Controller {
 	Hashtable<String, ActionItems> contents;
 	public static Database db;
 	
+	static {
+		try {
+			db = new Database();
+		} catch (InstantiationException | IllegalAccessException
+				| ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void addAffiliation() {
 		String member = membersKnown.getSelectionModel().getSelectedItem();
 		String team = membersTeamsAvailable.getSelectionModel().getSelectedItem();
@@ -335,11 +345,10 @@ public class Controller {
 	}
 	
 	public void initialize() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		db = new Database();
-		flag = db.isDBReachable();
+//		flag = db.isDBReachable();
 		initializeActionItems();
-		initializeMembers();
-		initializeTeams();
+//		initializeMembers();
+//		initializeTeams();
 	}
 	
 	private void initializeActionItems() {
@@ -475,6 +484,7 @@ public class Controller {
 			LocalDate dueD = LocalDate.parse(aItem.getDueDate().toString());
 			actionItemDueDate.setValue(dueD);
 			actionItemMember.setValue(aItem.getMember());
+			actionItemTeam.setValue(aItem.getTeam());
 			int sta = aItem.getStatus();
 			if(sta == 0) actionItemStatus.setValue("closed");
 			else actionItemStatus.setValue("open");
@@ -586,13 +596,13 @@ public class Controller {
 	}
 	
 	public void selectedListItem() {
+		String name = consoleActionItems.getSelectionModel().getSelectedItem();
 		if(flag) {
-			String listname = consoleActionItems.getSelectionModel().getSelectedItem();
-			String query = "select * from actionitems where name ='" + listname + "'";
+			String query = "select * from actionitems where name ='" + name + "'";
 			ResultSet rs = db.query(query);
 			try {
 				if(rs.next()) {
-					consoleItemName.setText(listname);
+					consoleItemName.setText(name);
 					consoleItemDesc.setText(rs.getString("description"));
 					consoleItemResolution.setText(rs.getString("resolution"));
 					consoleCreationDate.setText(rs.getString("creation"));
@@ -609,7 +619,19 @@ public class Controller {
 			}
 		}
 		else {
-			
+			ActionItems aItem = contents.get(name);
+			consoleItemName.setText(aItem.getName());
+			consoleItemDesc.setText(aItem.getDescription());
+			consoleItemResolution.setText(aItem.getResolution());
+//			System.out.println(aItem.getCreationDate().toString());
+			consoleCreationDate.setText(aItem.getCreationDate().toString());
+//			LocalDate dueD = LocalDate.parse(aItem.getDueDate().toString());
+			consoleDueDate.setText(aItem.getDueDate().toString());
+			consoleMember.setText(aItem.getMember());
+			consoleTeam.setText(aItem.getTeam());
+			int sta = aItem.getStatus();
+			if(sta == 0) consoleStatus.setText("closed");
+			else consoleStatus.setText("open");
 		}
 	}
 	
