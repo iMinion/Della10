@@ -57,6 +57,14 @@ public class Controller {
 	private Text consoleMember;
 	@FXML
 	private Text consoleTeam;
+	@FXML
+	private Button deleteActionItemB;
+	@FXML
+	private Button createActionItemB; 
+	@FXML
+	private Button clearForm;
+	@FXML
+	private Button updateActionItemB;
 	
 	@FXML
 	private TextField membersNewName;
@@ -92,11 +100,14 @@ public class Controller {
 	@FXML
 	private Button teamsRemoveAssociation;
 	
+	
 	private ActionItems actionItem = new ActionItems();
 	private Members members = new Members();
 	private Team teams = new Team();
-	private Database db;
 	private String selectedName;
+	private boolean flag = false;
+	
+	public static Database db;
 	
 	public void addAffiliation() {
 		String member = membersKnown.getSelectionModel().getSelectedItem();
@@ -305,7 +316,7 @@ public class Controller {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		membersRemove.setDisable(true);
+		membersRemove.setDisable(false);
 		membersAddAffiliation.setDisable(true);
 		membersAddNew.setDisable(true);
 	}
@@ -316,121 +327,176 @@ public class Controller {
 	
 	public void initialize() {
 		db = new Database();
+		flag = db.isDBReachable();
 		initializeActionItems();
 		initializeMembers();
 		initializeTeams();
 	}
 	
 	private void initializeActionItems() {
-		String query = "select name from actionitems";
-		ResultSet rs = db.query(query);
-		ArrayList<String> list = new ArrayList<String>();
-		try {
-			while(rs.next()) {
-				list.add(rs.getString("name"));
+		if(flag) {
+			String query = "select name from actionitems";
+			ResultSet rs = db.query(query);
+			ArrayList<String> list = new ArrayList<String>();
+			try {
+				while(rs.next()) {
+					list.add(rs.getString("name"));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ObservableList<String> namesList = FXCollections.observableArrayList(list);
+			actionItemList.setItems(namesList);
+			actionItemList.getSelectionModel().clearAndSelect(0);
+			consoleActionItems.setItems(namesList);
+			selectedName = actionItemList.getValue();
 		}
-		ObservableList<String> namesList = FXCollections.observableArrayList(list);
-		actionItemList.setItems(namesList);
-		actionItemList.getSelectionModel().clearAndSelect(0);
-		consoleActionItems.setItems(namesList);
-		selectedName = actionItemList.getValue();
+		else {
+			updateActionItemB.setDisable(true);
+			clearForm.setDisable(true);
+			createActionItemB.setDisable(true);
+			deleteActionItemB.setDisable(true);
+		}
 	}
 	
 	private void initializeMembers() {
-		String query = "select * from members";
-		ArrayList<String> listM = new ArrayList<String>();
-		ResultSet rs = db.query(query);
-		try {
-			while(rs.next()) {
-				listM.add(rs.getString("membername"));
+		if(flag) {
+			String query = "select * from members";
+			ArrayList<String> listM = new ArrayList<String>();
+			ResultSet rs = db.query(query);
+			try {
+				while(rs.next()) {
+					listM.add(rs.getString("membername"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ObservableList<String> memList = FXCollections.observableArrayList(listM);
+			membersKnown.setItems(memList);
 		}
-		ObservableList<String> memList = FXCollections.observableArrayList(listM);
-		membersKnown.setItems(memList);
+		else {
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+		}
 	}
 	
 	private void initializeTeams() {
-		String query = "select * from teams";
-		ArrayList<String> listT = new ArrayList<String>();
-		ResultSet rs = db.query(query);
-		try {
-			while(rs.next()) {
-				listT.add(rs.getString("teamname"));
+		if(flag) {
+			String query = "select * from teams";
+			ArrayList<String> listT = new ArrayList<String>();
+			ResultSet rs = db.query(query);
+			try {
+				while(rs.next()) {
+					listT.add(rs.getString("teamname"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ObservableList<String> teamList = FXCollections.observableArrayList(listT);
+			teamsKnown.setItems(teamList);
 		}
-		ObservableList<String> teamList = FXCollections.observableArrayList(listT);
-		teamsKnown.setItems(teamList);
+		else {
+			teamsAddAssociation.setDisable(true);
+			teamsAddNew.setDisable(true);
+			teamsRemove.setDisable(true);
+			teamsRemoveAssociation.setDisable(true);
+		}
 	}
 	
 	public void loadActionItem() {
-
-		String name = actionItemList.getValue();
-		String query = "select * from actionitems where name = '" + name + "'";
-		ResultSet rs = db.query(query);
-		try {
-			if(rs.next()) {
-				actionItemName.setText(rs.getString("name"));
-				actionItemDescription.setText(rs.getString("description"));
-				actionItemResolution.setText(rs.getString("resolution"));
-				actionItemCreationDate.setText(rs.getString("creation"));
-				LocalDate dueD = LocalDate.parse(rs.getString("due"));
-				actionItemDueDate.setValue(dueD);
-				actionItemMember.setValue(rs.getString("member"));
-				actionItemTeam.setValue(rs.getString("team"));
-				int sta = Integer.parseInt(rs.getString("status"));
-				if(sta == 0) actionItemStatus.setValue("closed");
-				else actionItemStatus.setValue("open");
+		if(flag) {
+			String name = actionItemList.getValue();
+			String query = "select * from actionitems where name = '" + name + "'";
+			ResultSet rs = db.query(query);
+			try {
+				if(rs.next()) {
+					actionItemName.setText(rs.getString("name"));
+					actionItemDescription.setText(rs.getString("description"));
+					actionItemResolution.setText(rs.getString("resolution"));
+					actionItemCreationDate.setText(rs.getString("creation"));
+					LocalDate dueD = LocalDate.parse(rs.getString("due"));
+					actionItemDueDate.setValue(dueD);
+					actionItemMember.setValue(rs.getString("member"));
+					actionItemTeam.setValue(rs.getString("team"));
+					int sta = Integer.parseInt(rs.getString("status"));
+					if(sta == 0) actionItemStatus.setValue("closed");
+					else actionItemStatus.setValue("open");
+				}
+				createActionItemB.setDisable(true);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			selectedName = name;
 		}
-		selectedName = name;
+		else {
+			
+		}
 	}
 
 	public void membersDisableAffiliation() {
-		membersAddAffiliation.setDisable(true);
-		membersAddNew.setDisable(true);
-		membersRemove.setDisable(true);
-		membersRemoveAffiliation.setDisable(false);
+		if(flag) {
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(false);
+		}
+		else {
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+		}
 	}
 	
 	public void memberAddListEnable() {
-		membersAddAffiliation.setDisable(true);
-		membersAddNew.setDisable(false);
-		membersRemove.setDisable(true);
-		membersRemoveAffiliation.setDisable(true);
+		if(flag) {
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(false);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+		}
+		else {
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+		}		
 	}
 	
 	public void memberEnableAffiliation() {
-		membersAddNew.setDisable(true);
-		membersAddAffiliation.setDisable(false);
-		membersRemove.setDisable(true);
-		membersRemoveAffiliation.setDisable(true);
+		if(flag) {
+			membersAddNew.setDisable(true);
+			membersAddAffiliation.setDisable(false);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+		}
+		else {
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
+			membersRemove.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+		}
 	}
 	
 	public void removeAffiliation() {
-		String member = membersKnown.getSelectionModel().getSelectedItem();
-		String team = membersTeamsFor.getSelectionModel().getSelectedItem();
-		String query = "delete from memberTeam where membername='" + member + "' and teamname='" + team + "'";
-		int i = db.update(query);
-		if(i != 0) {
-			membersTeamsAvailable.getItems().add(team);
-			membersTeamsFor.getItems().remove(team);
-			membersAddAffiliation.setDisable(true);
-			membersAddNew.setDisable(true);
-			membersRemoveAffiliation.setDisable(true);
-			membersRemove.setDisable(true);
+		if(flag) {
+			String member = membersKnown.getSelectionModel().getSelectedItem();
+			String team = membersTeamsFor.getSelectionModel().getSelectedItem();
+			String query = "delete from memberTeam where membername='" + member + "' and teamname='" + team + "'";
+			int i = db.update(query);
+			if(i != 0) {
+				membersTeamsAvailable.getItems().add(team);
+				membersTeamsFor.getItems().remove(team);
+				membersAddAffiliation.setDisable(true);
+				membersAddNew.setDisable(true);
+				membersRemoveAffiliation.setDisable(true);
+				membersRemove.setDisable(true);
+			}
 		}
 	}
 	
@@ -476,25 +542,30 @@ public class Controller {
 	}
 	
 	public void selectedListItem() {
-		String listname = consoleActionItems.getSelectionModel().getSelectedItem();
-		String query = "select * from actionitems where name ='" + listname + "'";
-		ResultSet rs = db.query(query);
-		try {
-			if(rs.next()) {
-				consoleItemName.setText(listname);
-				consoleItemDesc.setText(rs.getString("description"));
-				consoleItemResolution.setText(rs.getString("resolution"));
-				consoleCreationDate.setText(rs.getString("creation"));
-				consoleDueDate.setText(rs.getString("due"));
-				consoleMember.setText(rs.getString("member"));
-				consoleTeam.setText(rs.getString("team"));
-				int i = Integer.parseInt(rs.getString("status"));
-				if(i == 0) consoleStatus.setText("closed");
-				else consoleStatus.setText("open");
+		if(flag) {
+			String listname = consoleActionItems.getSelectionModel().getSelectedItem();
+			String query = "select * from actionitems where name ='" + listname + "'";
+			ResultSet rs = db.query(query);
+			try {
+				if(rs.next()) {
+					consoleItemName.setText(listname);
+					consoleItemDesc.setText(rs.getString("description"));
+					consoleItemResolution.setText(rs.getString("resolution"));
+					consoleCreationDate.setText(rs.getString("creation"));
+					consoleDueDate.setText(rs.getString("due"));
+					consoleMember.setText(rs.getString("member"));
+					consoleTeam.setText(rs.getString("team"));
+					int i = Integer.parseInt(rs.getString("status"));
+					if(i == 0) consoleStatus.setText("closed");
+					else consoleStatus.setText("open");
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}
+		else {
+			
 		}
 	}
 	

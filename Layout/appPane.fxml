@@ -172,10 +172,10 @@
 							<children>
 								<HBox layoutX="3.0" layoutY="493.0" prefHeight="29.0" prefWidth="643.0" spacing="20.0">
 									<children>
-										<Button mnemonicParsing="false" onAction="#updateActionItem" prefHeight="26.0" prefWidth="159.0" text="Update this action item" />
-										<Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearTheForm" prefHeight="26.5" prefWidth="115.0" text="Clear this Form" />
-										<Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#createActionItem" prefHeight="26.0" prefWidth="170.0" text="Create new action item" />
-										<Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteThisActionItem" prefHeight="26.0" prefWidth="150.0" text="Delete this action item" />
+										<Button fx:id="updateActionItemB" mnemonicParsing="false" onAction="#updateActionItem" prefHeight="26.0" prefWidth="159.0" text="Update this action item" />
+										<Button fx:id="clearForm" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearTheForm" prefHeight="26.5" prefWidth="115.0" text="Clear this Form" />
+										<Button fx:id="createActionItemB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#createActionItem" prefHeight="26.0" prefWidth="170.0" text="Create new action item" />
+										<Button fx:id="deleteActionItemB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteThisActionItem" prefHeight="26.0" prefWidth="150.0" text="Delete this action item" />
 									</children>
 								</HBox>
 								<VBox layoutX="8.0" layoutY="52.0" prefHeight="162.0" prefWidth="614.0" spacing="10.0">

@@ -1,15 +1,26 @@
 package com.ActionItem;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Hashtable;
 
-import com.Database.Database;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
-//import com.mysql.jdbc.Connection;
+import static com.MainController.Controller.db;
 
-public class ActionItems {
-	private Database dbActions;
+public class ActionItems implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2750687422355250894L;
+
 	
 	private String name;
 	private String resolution;
@@ -19,12 +30,32 @@ public class ActionItems {
 	private Date dueDate;
 	private String member;
 	private String team;
+
+	private static Hashtable<String, ActionItems> contents = new Hashtable<String, ActionItems>();
+	private static Hashtable<String, ActionItems> recontents = new Hashtable<String, ActionItems>();
 	
-	
-	public ActionItems() {
-		dbActions = new Database();
+	@SuppressWarnings("unchecked")
+	public Hashtable<String, ActionItems> deSerialize() {
+		try {
+			FileInputStream file = new FileInputStream("actionItem.ser");
+			ObjectInputStream in = new ObjectInputStream(file);
+			Object obj = in.readObject();
+			recontents = (Hashtable<String, ActionItems>) obj;
+			in.close();
+			return recontents;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
-	
+
 	public void setName(String name) throws InsufficientCredentialsException {
 		if(name.trim().length() == 0) {
 			throw new InsufficientCredentialsException("Please enter all the details");
@@ -48,7 +79,6 @@ public class ActionItems {
 	
 	public void setDueDate(java.util.Date date) throws InsufficientCredentialsException {
 		java.util.Date d = new java.util.Date();
-		System.out.println(date);
 		if(date.before(d)) {
 			throw new InsufficientCredentialsException();
 		}
@@ -104,10 +134,10 @@ public class ActionItems {
 	
 	public boolean delete(String name) {
 		String query = "delete from actionitems where name = '" + name + "'";
-		int i = dbActions.update(query);
+		int i = db.update(query);
 		if(i == 0) {
 			try {
-				dbActions.rollback();
+				db.rollback();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -116,12 +146,29 @@ public class ActionItems {
 		}
 		else {
 			try {
-				dbActions.save();
+				db.save();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return true;
+		}
+		
+	}
+	
+	public void Serialize() {
+		try {
+			FileOutputStream file = new FileOutputStream("actionItems.ser");
+			ObjectOutputStream out = new ObjectOutputStream(file);
+			contents.put(this.name, this);
+			out.writeObject(contents);
+			out.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}
@@ -135,13 +182,13 @@ public class ActionItems {
 					+ " due, status, member, team) values('" + name + "', '" + description + "', '" + resolution + "', '"+ 
 					new java.sql.Date(new java.util.Date().getTime()) + "', '" +this.dueDate + "', '" + this.status + "', '" 
 					+ this.member + "', '" + this.team + "')";
-			int i = dbActions.update(query);
+			int i = db.update(query);
 			if(i == 0) {
-				dbActions.rollback();
+				db.rollback();
 				return false;
 			}
 			else {
-				dbActions.save();
+				db.save();
 				return true;
 			}
 			
@@ -161,11 +208,11 @@ public class ActionItems {
 						+ "', due = '" + this.dueDate + "', status = '" + this.status + "', member = '" + this.member + "', team ='" + this.team + "'"
 						+ "where name = '" + name + "'";
 		System.out.println(query);
-		int i = dbActions.update(query);
+		int i = db.update(query);
 		System.out.println(i);
 		if(i == 0) {
 			try {
-				dbActions.rollback();
+				db.rollback();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -174,7 +221,7 @@ public class ActionItems {
 		}
 		else {
 			try {
-				dbActions.save();
+				db.save();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

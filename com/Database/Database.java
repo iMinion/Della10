@@ -7,11 +7,12 @@ import java.sql.Savepoint;
 
 
 
+
 public class Database {
-	final String url = "jdbc:mysql://localhost/della";
-	final String driver = "com.mysql.jdbc.Driver";
-	final String uName = "root";
-	final String pWord = "root";
+	private final String url = "jdbc:mysql://localhost/della";
+	private final String driver = "com.mysql.jdbc.Driver";
+	private final String uName = "root";
+	private final String pWord = "root";
 	private java.sql.Connection con;
 	private java.sql.Statement s;
 	private Savepoint sp;
@@ -35,6 +36,17 @@ public class Database {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isDBReachable() {
+		try {
+			return con.isValid(10);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public ResultSet query(String message) {
 		ResultSet rs;
 		try {
