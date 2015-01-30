@@ -113,7 +113,6 @@ public class Controller {
 		String member = membersKnown.getSelectionModel().getSelectedItem();
 		String team = membersTeamsAvailable.getSelectionModel().getSelectedItem();
 		String query = "insert into memberTeam (membername,teamname) values ('"+member+"', '"+team+"')";
-		System.out.println(query);
 		int i = db.update(query);
 		if(i != 0) {
 			membersTeamsAvailable.getItems().remove(team);
@@ -325,9 +324,18 @@ public class Controller {
 		System.exit(1);
 	}
 	
+	public void enableActionItemButtons() {
+		System.out.println("enabling buttons");
+		deleteActionItemB.setDisable(true);
+		createActionItemB.setDisable(false);
+		updateActionItemB.setDisable(false);
+		clearForm.setDisable(false);
+	}
+	
 	public void initialize() {
 		db = new Database();
 		flag = db.isDBReachable();
+		System.out.println(flag);
 		initializeActionItems();
 		initializeMembers();
 		initializeTeams();
@@ -347,9 +355,11 @@ public class Controller {
 			}
 			ObservableList<String> namesList = FXCollections.observableArrayList(list);
 			actionItemList.setItems(namesList);
-			actionItemList.getSelectionModel().clearAndSelect(0);
 			consoleActionItems.setItems(namesList);
-			selectedName = actionItemList.getValue();
+			updateActionItemB.setDisable(true);
+			clearForm.setDisable(true);
+			createActionItemB.setDisable(true);
+			deleteActionItemB.setDisable(true);
 		}
 		else {
 			updateActionItemB.setDisable(true);
@@ -374,6 +384,7 @@ public class Controller {
 			}
 			ObservableList<String> memList = FXCollections.observableArrayList(listM);
 			membersKnown.setItems(memList);
+			actionItemMember.setItems(memList);
 		}
 		else {
 			membersAddAffiliation.setDisable(true);
@@ -398,6 +409,7 @@ public class Controller {
 			}
 			ObservableList<String> teamList = FXCollections.observableArrayList(listT);
 			teamsKnown.setItems(teamList);
+			actionItemTeam.setItems(teamList);
 		}
 		else {
 			teamsAddAssociation.setDisable(true);
@@ -407,13 +419,14 @@ public class Controller {
 		}
 	}
 	
-	public void loadActionItem() {
+	public void loadActionItem() throws InsufficientCredentialsException {
 		if(flag) {
 			String name = actionItemList.getValue();
 			String query = "select * from actionitems where name = '" + name + "'";
 			ResultSet rs = db.query(query);
 			try {
 				if(rs.next()) {
+					ActionItems aItem = new ActionItems();
 					actionItemName.setText(rs.getString("name"));
 					actionItemDescription.setText(rs.getString("description"));
 					actionItemResolution.setText(rs.getString("resolution"));
@@ -425,8 +438,18 @@ public class Controller {
 					int sta = Integer.parseInt(rs.getString("status"));
 					if(sta == 0) actionItemStatus.setValue("closed");
 					else actionItemStatus.setValue("open");
+					aItem.setName(rs.getString("name"));
+					aItem.setDesc(rs.getString("decription"));
+					aItem.setStatus(Integer.parseInt(rs.getString("status")));
+					aItem.setResolution(rs.getString("resolution"));
+					aItem.setDueDate(rs.getDate("dueDate"));
+					aItem.setMember(rs.getString("member"));
+					aItem.setTeam(rs.getString("team"));
+					aItem.setCreationDate(rs.getDate("creation"));
+					actionItem = aItem;
 				}
 				createActionItemB.setDisable(true);
+				deleteActionItemB.setDisable(false);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -612,7 +635,6 @@ public class Controller {
 			}
 			
 		} catch (InsufficientCredentialsException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

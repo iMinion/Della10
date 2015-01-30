@@ -32,29 +32,8 @@ public class ActionItems implements Serializable{
 	private String team;
 
 	private static Hashtable<String, ActionItems> contents = new Hashtable<String, ActionItems>();
-	private static Hashtable<String, ActionItems> recontents = new Hashtable<String, ActionItems>();
+//	private static Hashtable<String, ActionItems> recontents = new Hashtable<String, ActionItems>();
 	
-	@SuppressWarnings("unchecked")
-	public Hashtable<String, ActionItems> deSerialize() {
-		try {
-			FileInputStream file = new FileInputStream("actionItem.ser");
-			ObjectInputStream in = new ObjectInputStream(file);
-			Object obj = in.readObject();
-			recontents = (Hashtable<String, ActionItems>) obj;
-			in.close();
-			return recontents;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	public void setName(String name) throws InsufficientCredentialsException {
 		if(name.trim().length() == 0) {
@@ -89,6 +68,10 @@ public class ActionItems implements Serializable{
 	
 	public void setStatus(int status) {
 		this.status = status;
+	}
+	
+	public void setCreationDate(Date date) {
+		this.creationDate = date;
 	}
 	
 	public void setMember(String member) {
@@ -131,7 +114,6 @@ public class ActionItems implements Serializable{
 		return this.team;
 	}
 	
-	
 	public boolean delete(String name) {
 		String query = "delete from actionitems where name = '" + name + "'";
 		int i = db.update(query);
@@ -151,12 +133,34 @@ public class ActionItems implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			contents.remove(name);
+			serializeActionItem();
 			return true;
 		}
-		
 	}
 	
-	public void Serialize() {
+	@SuppressWarnings("unchecked")
+	public Hashtable<String, ActionItems> deSerialize() {
+		try {
+			FileInputStream file = new FileInputStream("actionItems.ser");
+			ObjectInputStream in = new ObjectInputStream(file);
+			Object obj = in.readObject();
+			in.close();
+			return (Hashtable<String, ActionItems>) obj;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void serializeActionItem() {
 		try {
 			FileOutputStream file = new FileOutputStream("actionItems.ser");
 			ObjectOutputStream out = new ObjectOutputStream(file);
@@ -170,13 +174,9 @@ public class ActionItems implements Serializable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public boolean storeActionItem() {
-		System.out.println("creating a new item");
-		
-		
 		try {
 			String query = "insert into actionitems (name, description, resolution, creation,"
 					+ " due, status, member, team) values('" + name + "', '" + description + "', '" + resolution + "', '"+ 
@@ -189,6 +189,7 @@ public class ActionItems implements Serializable{
 			}
 			else {
 				db.save();
+				serializeActionItem();
 				return true;
 			}
 			
@@ -207,9 +208,7 @@ public class ActionItems implements Serializable{
 		String query = "update actionitems set name = '" + this.name + "', description = '" + description + "', resolution= '" + resolution
 						+ "', due = '" + this.dueDate + "', status = '" + this.status + "', member = '" + this.member + "', team ='" + this.team + "'"
 						+ "where name = '" + name + "'";
-		System.out.println(query);
 		int i = db.update(query);
-		System.out.println(i);
 		if(i == 0) {
 			try {
 				db.rollback();
@@ -226,6 +225,8 @@ public class ActionItems implements Serializable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			contents.remove(name);
+			contents.put(this.name, this);
 			return true;
 		}
 		

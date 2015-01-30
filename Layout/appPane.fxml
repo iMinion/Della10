@@ -285,7 +285,7 @@
 														<Insets left="30.0" />
 													</HBox.margin>
 												</Text>
-												<DatePicker fx:id="actionItemDueDate" prefHeight="15.0" prefWidth="102.0">
+												<DatePicker fx:id="actionItemDueDate" onInputMethodTextChanged="#enableActionItemButtons" onKeyTyped="#enableActionItemButtons" prefHeight="15.0" prefWidth="102.0">
 													<HBox.margin>
 														<Insets left="5.0" />
 													</HBox.margin>
@@ -303,7 +303,7 @@
 														<Insets top="4.0" />
 													</HBox.margin>
 												</Text>
-												<ComboBox fx:id="actionItemStatus" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="120.0">
+												<ComboBox fx:id="actionItemStatus" maxHeight="-Infinity" minHeight="-Infinity" onInputMethodTextChanged="#enableActionItemButtons" onKeyTyped="#enableActionItemButtons" prefHeight="25.0" prefWidth="120.0">
 													<items>
 														<FXCollections fx:factory="observableArrayList">
 															<String fx:value="open" />
@@ -321,36 +321,14 @@
 												<Font name="System Bold" size="13.0" />
 											</font>
 										</Text>
-										<ComboBox fx:id="actionItemMember" prefHeight="20.0" prefWidth="165.0">
-											<items>
-												<FXCollections fx:factory="observableArrayList">
-													<String fx:value="ram" />
-													<String fx:value="suraj" />
-													<String fx:value="roopa" />
-													<String fx:value="teju" />
-												</FXCollections>
-											</items>
-											<value>
-												<String fx:value="ram" />
-											</value>
+										<ComboBox fx:id="actionItemMember" onInputMethodTextChanged="#enableActionItemButtons" onKeyTyped="#enableActionItemButtons" prefHeight="20.0" prefWidth="165.0">								
 										</ComboBox>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Assigned to Team">
 											<font>
 												<Font name="System Bold" size="13.0" />
 											</font>
 										</Text>
-										<ComboBox fx:id="actionItemTeam" prefHeight="20.0" prefWidth="165.0">
-											<items>
-												<FXCollections fx:factory="observableArrayList">
-													<String fx:value="alpha" />
-													<String fx:value="beta" />
-													<String fx:value="gamma" />
-													<String fx:value="delta" />
-												</FXCollections>
-											</items>
-											<value>
-												<String fx:value="alpha" />
-											</value>
+										<ComboBox fx:id="actionItemTeam" onInputMethodTextChanged="#enableActionItemButtons" onKeyTyped="#enableActionItemButtons" prefHeight="20.0" prefWidth="165.0">
 										</ComboBox>
 									</children>
 								</VBox>
@@ -364,13 +342,13 @@
 														<Font size="15.0" />
 													</font>
 												</Text>
-												<TextField fx:id="actionItemName" prefHeight="26.0" prefWidth="360.0" />
+												<TextField fx:id="actionItemName" onInputMethodTextChanged="#enableActionItemButtons" onKeyTyped="#enableActionItemButtons" prefHeight="26.0" prefWidth="360.0" />
 											</children>
 										</HBox>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
-										<TextArea fx:id="actionItemDescription" prefHeight="65.0" prefWidth="399.0" />
+										<TextArea fx:id="actionItemDescription" onInputMethodTextChanged="#enableActionItemButtons" onKeyTyped="#enableActionItemButtons" prefHeight="65.0" prefWidth="399.0" />
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Resolution" />
-										<TextArea fx:id="actionItemResolution" prefHeight="65.0" prefWidth="399.0" />
+										<TextArea fx:id="actionItemResolution" onInputMethodTextChanged="#enableActionItemButtons" onKeyTyped="#enableActionItemButtons" prefHeight="65.0" prefWidth="399.0" />
 									</children>
 								</VBox>
 								<Text layoutX="245.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Action Items">
