@@ -20,6 +20,7 @@ import javafx.scene.text.Text;
 import com.ActionItem.ActionItems;
 import com.ActionItem.InsufficientCredentialsException;
 import com.Database.Database;
+import com.InternetCheck.InternetTest;
 import com.Members.Members;
 import com.MembersTeams.MembersTeams;
 import com.Team.Team;
@@ -103,6 +104,15 @@ public class Controller {
 	private Button teamsAddAssociation;
 	@FXML
 	private Button teamsRemoveAssociation;
+	
+	@FXML
+	private Text consoleNetworkNotifier;
+	@FXML
+	private Text actionNetworkNotifier;
+	@FXML
+	private Text membersNetworkNotifier;
+	@FXML
+	private Text teamsNetworkNotifier;
 	
 	
 	private ActionItems actionItem = new ActionItems();
@@ -210,6 +220,18 @@ public class Controller {
 		}
 	}
 		
+	public void check() {
+		isInternetReachable();
+		if(!flag) disableAll();
+		else {
+			consoleNetworkNotifier.setText("Internet Access");
+			actionNetworkNotifier.setText("Internet Access");
+			membersNetworkNotifier.setText("Internet Access");
+			teamsNetworkNotifier.setText("Internet Access");
+		}
+		
+	}
+	
 	public void clearTheForm() {
 		try {
 			actionItemList.getSelectionModel().clearSelection();
@@ -280,6 +302,25 @@ public class Controller {
 
 			}
 		}
+	}
+	
+	public void disableAll() {
+		deleteActionItemB.setDisable(true);
+		createActionItemB.setDisable(true);
+		updateActionItemB.setDisable(true);
+		clearForm.setDisable(true);
+		teamsAddAssociation.setDisable(true);
+		teamsAddNew.setDisable(true);
+		teamsRemove.setDisable(true);
+		teamsRemoveAssociation.setDisable(true);
+		membersAddAffiliation.setDisable(true);
+		membersAddNew.setDisable(true);
+		membersRemove.setDisable(true);
+		membersRemoveAffiliation.setDisable(true);
+		consoleNetworkNotifier.setText("No Internet Access");
+		actionNetworkNotifier.setText("No Internet Access");
+		membersNetworkNotifier.setText("No Internet Access");
+		teamsNetworkNotifier.setText("No Internet Access");
 	}
 	
 	public void displayMembers() {
@@ -414,7 +455,7 @@ public class Controller {
 	}
 	
 	public void initialize() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-		flag = db.isDBReachable();
+		isInternetReachable();
 		System.out.println(flag);
 		initializeActionItems();
 		initializeMembers();
@@ -522,6 +563,10 @@ public class Controller {
 		teamList = FXCollections.observableArrayList(listT);
 		teamsKnown.setItems(teamList);
 		actionItemTeam.setItems(teamList);
+	}
+	
+	public void isInternetReachable() {
+		flag = InternetTest.testInet();
 	}
 	
 	public void loadActionItem() throws InsufficientCredentialsException {
