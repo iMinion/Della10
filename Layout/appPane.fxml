@@ -104,7 +104,7 @@
 								<HBox layoutX="417.0" layoutY="10.0" prefHeight="33.0" prefWidth="200.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internet Access: " />
-										<Text fx:id="network" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
+										<Text fx:id="consoleNetworkNotifier" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
 									</children>
 								</HBox>
 								<Text layoutX="444.0" layoutY="532.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
@@ -166,7 +166,7 @@
 						</AnchorPane>
 					</content>
 				</Tab>
-				<Tab fx:id="actionNetworkNotifier" text="Action Items">
+				<Tab text="Action Items">
 					<content>
 						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
 							<children>
@@ -359,7 +359,7 @@
 								<HBox layoutX="420.0" layoutY="36.0" prefHeight="33.0" prefWidth="200.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internet Access: " />
-										<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
+										<Text fx:id="actionNetworkNotifier" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
 									</children>
 								</HBox>
 								<Text layoutX="422.0" layoutY="486.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
@@ -367,7 +367,7 @@
 						</AnchorPane>
 					</content>
 				</Tab>
-				<Tab fx:id="membersNetworkNotifier" text="Members">
+				<Tab text="Members">
 					<content>
 						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
 							<children>
@@ -526,7 +526,7 @@
 								<HBox layoutX="423.0" layoutY="25.0" prefHeight="33.0" prefWidth="200.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internet Access: " />
-										<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
+										<Text fx:id="membersNetworkNotifier" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
 									</children>
 								</HBox>
 								<Text layoutX="220.0" layoutY="542.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
@@ -534,7 +534,7 @@
 						</AnchorPane>
 					</content>
 				</Tab>
-				<Tab fx:id="teamsNetworkNotifier" text="Teams">
+				<Tab text="Teams">
 					<content>
 						<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
 							<children>
@@ -690,7 +690,7 @@
 								<HBox layoutX="414.0" layoutY="28.0" prefHeight="33.0" prefWidth="200.0">
 									<children>
 										<Text strokeType="OUTSIDE" strokeWidth="0.0" text="Internet Access: " />
-										<Text fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
+										<Text fx:id="teamsNetworkNotifier" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text=" Not Availabe" />
 									</children>
 								</HBox>
 								<Text layoutX="223.0" layoutY="528.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-- No changes had been made --" />
