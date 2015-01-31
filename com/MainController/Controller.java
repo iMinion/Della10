@@ -15,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.scene.control.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import com.ActionItem.ActionItems;
@@ -222,12 +223,18 @@ public class Controller {
 		
 	public void check() {
 		isInternetReachable();
+		System.out.println(flag);
 		if(!flag) disableAll();
 		else {
-			consoleNetworkNotifier.setText("Internet Access");
-			actionNetworkNotifier.setText("Internet Access");
-			membersNetworkNotifier.setText("Internet Access");
-			teamsNetworkNotifier.setText("Internet Access");
+			System.out.println("Howdy");
+			consoleNetworkNotifier.setText("Available");
+			actionNetworkNotifier.setText("Available");
+			membersNetworkNotifier.setText("Available");
+			teamsNetworkNotifier.setText("Available");
+			consoleNetworkNotifier.setFill(Color.GREEN);
+			actionNetworkNotifier.setFill(Color.GREEN);
+			membersNetworkNotifier.setFill(Color.GREEN);
+			teamsNetworkNotifier.setFill(Color.GREEN);
 		}
 		
 	}
@@ -317,10 +324,14 @@ public class Controller {
 		membersAddNew.setDisable(true);
 		membersRemove.setDisable(true);
 		membersRemoveAffiliation.setDisable(true);
-		consoleNetworkNotifier.setText("No Internet Access");
-		actionNetworkNotifier.setText("No Internet Access");
-		membersNetworkNotifier.setText("No Internet Access");
-		teamsNetworkNotifier.setText("No Internet Access");
+		consoleNetworkNotifier.setText("Not Available");
+		actionNetworkNotifier.setText("Not Available");
+		membersNetworkNotifier.setText("Not Available");
+		teamsNetworkNotifier.setText("Not Available");
+		consoleNetworkNotifier.setFill(Color.RED);
+		actionNetworkNotifier.setFill(Color.RED);
+		membersNetworkNotifier.setFill(Color.RED);
+		teamsNetworkNotifier.setFill(Color.RED);
 	}
 	
 	public void displayMembers() {
@@ -358,8 +369,8 @@ public class Controller {
 			ArrayList<MembersTeams> con = mt.deSerialization();
 			ArrayList<String> membersFor = new ArrayList<String>();
 			for(MembersTeams mte:con) {
-				if(mte.getMember().equalsIgnoreCase(name)) {
-					membersFor.add(mte.getTeam());
+				if(mte.getTeam().equalsIgnoreCase(name)) {
+					membersFor.add(mte.getMember());
 				}
 			}
 			ArrayList<String> mAvailable = teams.deSerialize();
@@ -373,7 +384,7 @@ public class Controller {
 			teamsMembersAvailable.setItems(FXCollections.observableArrayList(membersAvailable));
 			teamsMembersFor.getItems().clear();
 			teamsMembersFor.setItems(FXCollections.observableArrayList(membersFor));
-			teamsRemove.setDisable(false);
+			teamsRemove.setDisable(true);
 			teamsRemoveAssociation.setDisable(true);
 			teamsAddNew.setDisable(true);
 		}
@@ -457,6 +468,7 @@ public class Controller {
 	public void initialize() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
 		isInternetReachable();
 		System.out.println(flag);
+		check();
 		initializeActionItems();
 		initializeMembers();
 		initializeTeams();
@@ -754,19 +766,21 @@ public class Controller {
 			}
 		}
 		else {
-			ActionItems aItem = contents.get(name);
-			consoleItemName.setText(aItem.getName());
-			consoleItemDesc.setText(aItem.getDescription());
-			consoleItemResolution.setText(aItem.getResolution());
-//			System.out.println(aItem.getCreationDate().toString());
-			consoleCreationDate.setText(aItem.getCreationDate().toString());
-//			LocalDate dueD = LocalDate.parse(aItem.getDueDate().toString());
-			consoleDueDate.setText(aItem.getDueDate().toString());
-			consoleMember.setText(aItem.getMember());
-			consoleTeam.setText(aItem.getTeam());
-			int sta = aItem.getStatus();
-			if(sta == 0) consoleStatus.setText("closed");
-			else consoleStatus.setText("open");
+			if(!name.equals(null)) {
+				ActionItems aItem = contents.get(name);
+				consoleItemName.setText(aItem.getName());
+				consoleItemDesc.setText(aItem.getDescription());
+				consoleItemResolution.setText(aItem.getResolution());
+				//			System.out.println(aItem.getCreationDate().toString());
+				consoleCreationDate.setText(aItem.getCreationDate().toString());
+				//			LocalDate dueD = LocalDate.parse(aItem.getDueDate().toString());
+				consoleDueDate.setText(aItem.getDueDate().toString());
+				consoleMember.setText(aItem.getMember());
+				consoleTeam.setText(aItem.getTeam());
+				int sta = aItem.getStatus();
+				if(sta == 0) consoleStatus.setText("closed");
+				else consoleStatus.setText("open");
+			}
 		}
 	}
 	
