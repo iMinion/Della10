@@ -146,6 +146,7 @@ public class ActionItems implements Serializable{
 			ObjectInputStream in = new ObjectInputStream(file);
 			Object obj = in.readObject();
 			in.close();
+			file.close();
 			return (Hashtable<String, ActionItems>) obj;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

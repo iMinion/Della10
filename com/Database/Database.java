@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 
 public class Database {
-	private final String url = "jdbc:mysql://10.10.11.53/della";
+	private final String url = "jdbc:mysql://localhost/della";
 	private final String driver = "com.mysql.jdbc.Driver";
-	private final String uName = "iminion";
+	private final String uName = "root";
 	private final String pWord = "root";
 	private java.sql.Connection con;
 	private java.sql.Statement s;

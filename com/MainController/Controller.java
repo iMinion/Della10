@@ -1,5 +1,6 @@
 package com.MainController;
 
+import java.io.EOFException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
@@ -20,6 +21,7 @@ import com.ActionItem.ActionItems;
 import com.ActionItem.InsufficientCredentialsException;
 import com.Database.Database;
 import com.Members.Members;
+import com.MembersTeams.MembersTeams;
 import com.Team.Team;
 
 public class Controller {
@@ -126,6 +128,7 @@ public class Controller {
 		String team = membersTeamsAvailable.getSelectionModel().getSelectedItem();
 		String query = "insert into memberTeam (membername,teamname) values ('"+member+"', '"+team+"')";
 		int i = db.update(query);
+		MembersTeams mt = new MembersTeams();
 		if(i != 0) {
 			membersTeamsAvailable.getItems().remove(team);
 			membersTeamsFor.getItems().add(team);
@@ -133,14 +136,16 @@ public class Controller {
 			membersAddNew.setDisable(true);
 			membersRemove.setDisable(true);
 			membersRemoveAffiliation.setDisable(true);
+			mt.changed();
 		}
-		
+
 	}
 	
 	public void addAssociation() {
 		String team = teamsKnown.getSelectionModel().getSelectedItem().toString();
 		String member = teamsMembersAvailable.getSelectionModel().getSelectedItem().toString();
 		String query = "insert into memberTeam (membername,teamname) values ('" + member + "', '" + team + "')";
+		MembersTeams mt = new MembersTeams();
 		int i = db.update(query);
 		if(i != 0) {
 			teamsMembersAvailable.getItems().remove(member);
@@ -149,9 +154,9 @@ public class Controller {
 			teamsAddNew.setDisable(true);
 			teamsRemove.setDisable(true);
 			teamsRemoveAssociation.setDisable(true);
+			mt.changed();
 		}
 	}
-	
 	
 	public void addMember() throws InsufficientCredentialsException {
 		String name = membersNewName.getText();
@@ -249,6 +254,10 @@ public class Controller {
 			actionItemList.getItems().add(name);
 			actionItemMember.getSelectionModel().clearSelection();
 			actionItemTeam.getSelectionModel().clearSelection();
+			updateActionItemB.setDisable(true);
+			createActionItemB.setDisable(true);
+			clearForm.setDisable(true);
+			deleteActionItemB.setDisable(true);
 		}
 	}
 	
@@ -276,61 +285,113 @@ public class Controller {
 	public void displayMembers() {
 		teamsAddNew.setDisable(true);
 		String name = teamsKnown.getSelectionModel().getSelectedItem();
-		String query = "select membername from members where membername NOT IN (select membername from memberTeam where teamname='" + name + "')";
-		System.out.println(query);
-		teamsMembersAvailable.getItems().clear();
-		ResultSet rs = db.query(query);
-		try {
-			while(rs.next()) {
-				System.out.println(rs.getString("membername"));
-				teamsMembersAvailable.getItems().add(rs.getString("membername"));
+		MembersTeams mt = new MembersTeams();
+		if(flag) {
+			teamsAddNew.setDisable(true);
+			String query = "select membername from members where membername NOT IN (select membername from memberTeam where teamname='" + name + "')";
+			teamsMembersAvailable.getItems().clear();
+			ResultSet rs = db.query(query);
+			try {
+				while(rs.next()) {
+					System.out.println(rs.getString("membername"));
+					teamsMembersAvailable.getItems().add(rs.getString("membername"));
+				}
+			} catch(SQLException e) {
+				e.printStackTrace();
 			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		query = "select membername from memberTeam where teamname ='" + name + "'";
-		teamsMembersFor.getItems().clear();
-		rs = db.query(query);
-		try {
-			while(rs.next()) {
-				teamsMembersFor.getItems().add(rs.getString("membername"));
+			query = "select membername from memberTeam where teamname ='" + name + "'";
+			teamsMembersFor.getItems().clear();
+			rs = db.query(query);
+			try {
+				while(rs.next()) {
+					teamsMembersFor.getItems().add(rs.getString("membername"));
+				}
+			}catch(SQLException ex) {
+				ex.printStackTrace();
 			}
-		}catch(SQLException ex) {
-			ex.printStackTrace();
+			teamsRemove.setDisable(false);
+			teamsAddAssociation.setDisable(true);
+			teamsRemoveAssociation.setDisable(true);
 		}
-		teamsRemove.setDisable(false);
-		teamsAddAssociation.setDisable(true);
-		teamsRemoveAssociation.setDisable(true);
+		else {
+			ArrayList<MembersTeams> con = mt.deSerialization();
+			ArrayList<String> membersFor = new ArrayList<String>();
+			for(MembersTeams mte:con) {
+				if(mte.getMember().equalsIgnoreCase(name)) {
+					membersFor.add(mte.getTeam());
+				}
+			}
+			ArrayList<String> mAvailable = teams.deSerialize();
+			ArrayList<String> membersAvailable = new ArrayList<String>();
+			for(int i = 0; i < mAvailable.size(); ++i) {
+				if(!membersFor.contains(mAvailable.get(i))) {
+					membersAvailable.add(mAvailable.get(i));
+				}
+			}
+			teamsMembersAvailable.getItems().clear();
+			teamsMembersAvailable.setItems(FXCollections.observableArrayList(membersAvailable));
+			teamsMembersFor.getItems().clear();
+			teamsMembersFor.setItems(FXCollections.observableArrayList(membersFor));
+			teamsRemove.setDisable(false);
+			teamsRemoveAssociation.setDisable(true);
+			teamsAddNew.setDisable(true);
+		}
 	}
 	
 	public void displayTeams() {
 		membersAddNew.setDisable(true);
 		String name = membersKnown.getSelectionModel().getSelectedItem();
-		String query = "select teamname from teams where teamname NOT IN (select teamname from memberTeam where membername='"+name+"')";
-		membersTeamsAvailable.getItems().clear();
-		ResultSet rs = db.query(query);
-		try {
-			while(rs.next()) {
-				membersTeamsAvailable.getItems().add(rs.getString("teamname"));
+		MembersTeams mt = new MembersTeams();
+		if(flag) {
+			String query = "select teamname from teams where teamname NOT IN (select teamname from memberTeam where membername='"+name+"')";
+			membersTeamsAvailable.getItems().clear();
+			ResultSet rs = db.query(query);
+			try {
+				while(rs.next()) {
+					membersTeamsAvailable.getItems().add(rs.getString("teamname"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		query = "select teamname from memberTeam where membername='" + name + "'";
-		membersTeamsFor.getItems().clear();
-		rs = db.query(query);
-		try {
-			while(rs.next()) {
-				membersTeamsFor.getItems().add(rs.getString("teamname"));
+			query = "select teamname from memberTeam where membername='" + name + "'";
+			membersTeamsFor.getItems().clear();
+			rs = db.query(query);
+			try {
+				while(rs.next()) {
+					membersTeamsFor.getItems().add(rs.getString("teamname"));
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			membersRemove.setDisable(false);
+			membersAddAffiliation.setDisable(true);
+			membersAddNew.setDisable(true);
 		}
-		membersRemove.setDisable(false);
-		membersAddAffiliation.setDisable(true);
-		membersAddNew.setDisable(true);
+		else {
+			ArrayList<MembersTeams> con = mt.deSerialization();
+			ArrayList<String> teamsFor = new ArrayList<String>();
+			for(MembersTeams mte:con) {
+				if(mte.getMember().equalsIgnoreCase(name)) {
+					teamsFor.add(mte.getTeam());
+				}
+			}
+			ArrayList<String> tAvailable = teams.deSerialize();
+			ArrayList<String> teamsAvailable = new ArrayList<String>();
+			for(int i = 0; i < tAvailable.size(); ++i) {
+				if(!teamsFor.contains(tAvailable.get(i))) {
+					teamsAvailable.add(tAvailable.get(i));
+				}
+			}
+			membersTeamsAvailable.getItems().clear();
+			membersTeamsAvailable.setItems(FXCollections.observableArrayList(teamsAvailable));
+			membersTeamsFor.getItems().clear();
+			membersTeamsFor.setItems(FXCollections.observableArrayList(teamsFor));
+			membersRemove.setDisable(true);
+			membersAddAffiliation.setDisable(true);
+			membersRemoveAffiliation.setDisable(true);
+		}
 	}
 	
 	public void doQuit() {
@@ -338,17 +399,26 @@ public class Controller {
 	}
 	
 	public void enableActionItemButtons() {
-		deleteActionItemB.setDisable(true);
-		createActionItemB.setDisable(false);
-		updateActionItemB.setDisable(false);
-		clearForm.setDisable(false);
+		if(!flag) {
+			deleteActionItemB.setDisable(true);
+			createActionItemB.setDisable(true);
+			updateActionItemB.setDisable(true);
+			clearForm.setDisable(true);
+		}
+		else {
+			deleteActionItemB.setDisable(true);
+			createActionItemB.setDisable(false);
+			updateActionItemB.setDisable(false);
+			clearForm.setDisable(false);
+		}
 	}
 	
 	public void initialize() throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
-//		flag = db.isDBReachable();
+		flag = db.isDBReachable();
+		System.out.println(flag);
 		initializeActionItems();
-//		initializeMembers();
-//		initializeTeams();
+		initializeMembers();
+		initializeTeams();
 	}
 	
 	private void initializeActionItems() {
@@ -389,10 +459,12 @@ public class Controller {
 	}
 	
 	private void initializeMembers() {
+		ArrayList<String> listM;
+		ObservableList<String> memList;
 		if(flag) {
 			String query = "select * from members";
-			ArrayList<String> listM = new ArrayList<String>();
 			ResultSet rs = db.query(query);
+			listM = new ArrayList<String>();
 			try {
 				while(rs.next()) {
 					listM.add(rs.getString("membername"));
@@ -401,22 +473,34 @@ public class Controller {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			ObservableList<String> memList = FXCollections.observableArrayList(listM);
-			membersKnown.setItems(memList);
-			actionItemMember.setItems(memList);
+			System.out.println(listM);
+			members.serialize();
 		}
 		else {
+			try {
+				listM = members.deSerialize();
+				
+			} catch (EOFException e) {
+				// TODO Auto-generated catch block
+//				e.printStackTrace();
+				listM = new ArrayList<String>();
+			}
 			membersAddAffiliation.setDisable(true);
 			membersAddNew.setDisable(true);
 			membersRemove.setDisable(true);
 			membersRemoveAffiliation.setDisable(true);
 		}
+		memList = FXCollections.observableArrayList(listM);
+		membersKnown.setItems(memList);
+		actionItemMember.setItems(memList);
 	}
 	
 	private void initializeTeams() {
+		ArrayList<String> listT;
+		ObservableList<String> teamList;
 		if(flag) {
 			String query = "select * from teams";
-			ArrayList<String> listT = new ArrayList<String>();
+			listT = new ArrayList<String>();
 			ResultSet rs = db.query(query);
 			try {
 				while(rs.next()) {
@@ -426,16 +510,18 @@ public class Controller {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			ObservableList<String> teamList = FXCollections.observableArrayList(listT);
-			teamsKnown.setItems(teamList);
-			actionItemTeam.setItems(teamList);
+			teams.serialize();
 		}
 		else {
+			listT = teams.deSerialize();
 			teamsAddAssociation.setDisable(true);
 			teamsAddNew.setDisable(true);
 			teamsRemove.setDisable(true);
 			teamsRemoveAssociation.setDisable(true);
 		}
+		teamList = FXCollections.observableArrayList(listT);
+		teamsKnown.setItems(teamList);
+		actionItemTeam.setItems(teamList);
 	}
 	
 	public void loadActionItem() throws InsufficientCredentialsException {
@@ -542,6 +628,7 @@ public class Controller {
 			String member = membersKnown.getSelectionModel().getSelectedItem();
 			String team = membersTeamsFor.getSelectionModel().getSelectedItem();
 			String query = "delete from memberTeam where membername='" + member + "' and teamname='" + team + "'";
+			MembersTeams mt = new MembersTeams();
 			int i = db.update(query);
 			if(i != 0) {
 				membersTeamsAvailable.getItems().add(team);
@@ -550,6 +637,7 @@ public class Controller {
 				membersAddNew.setDisable(true);
 				membersRemoveAffiliation.setDisable(true);
 				membersRemove.setDisable(true);
+				mt.changed();
 			}
 		}
 	}
@@ -560,6 +648,8 @@ public class Controller {
 		String query = "delete from memberTeam where membername='" + member + "' and teamname='" + team + "'";;
 		int i = db.update(query);
 		if(i != 0) {
+			MembersTeams mt = new MembersTeams();
+			mt.changed();
 			teamsMembersAvailable.getItems().add(member);
 			teamsMembersFor.getItems().remove(member);
 			teamsAddAssociation.setDisable(true);
